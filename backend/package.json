@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/omarhad/Enterprise-network.git",
+  "author": "Had",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon start"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
+  }
+}
