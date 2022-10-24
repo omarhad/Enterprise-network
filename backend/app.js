@@ -23,8 +23,6 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-
-
 const app = express(); // Create an instance of express
 
 
