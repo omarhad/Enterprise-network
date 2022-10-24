@@ -1,65 +1,88 @@
-const { set } = require("../../app");
+const mongoose = require('mongoose'); // MongoDB : gestionnaire de base de données
+const uniqueValidator = require('mongoose-unique-validator'); // MongoDB : validation unique
+const bcrypt = require('bcrypt'); // Bcrypt : gestionnaire de hashage
 
-module.exports = (sequelize, DataTypes) => {
-  return sequelize.define( 'USER', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+// -----------------------------------------------------------------------------------------------
+const userSchema = new mongoose.Schema({
     firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 50,
+        trim: true
     },
     lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 50,
+        trim: true
     },
-    picture : {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        unique: true,
     },
-    bio : {
-      type: DataTypes.STRING,
-      allowNull: true,
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
+        maxlength: 1024,
+        trim: true
     },
-    likes : {
-      type: DataTypes.STRING,
-      allowNull: true,
-      get(){
-        return this.getDataValue('likes').split(',');
-      },
-      set(likes){
-        this.setDataValue('likes', likes.join());
-      }
+    birthday: {
+        type: Date,
+        format: "%d/%m/%Y",
+        date: "$timestamp"
     },
-    birthday : {
-      type: DataTypes.DATE,
-      allowNull: true,
+    job: {
+        type: String,
+        minlength: 2,
+        maxlength: 50,
+        trim: true
     },
-    job : {
-      type: DataTypes.STRING,
-      allowNull: true,
+    image: {
+        type: String,
+        default: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+    },
+    bio: {
+        type: String,
+        maxlength: 1024
+    },
+    likes: {
+        type: [String],
     },
     isAdmin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
+        type: Boolean,
+        default: false
     }
-  }, {
-    timestamps: true,
-    createdAt: 'created',
-    updatedAt: false
-  });
+}, {
+    timestamps: true
+});
+
+// Pre-save hook : before saving the user, hash the password
+userSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+}).plugin(uniqueValidator); // Add the uniqueValidator plugin
+
+userSchema.statics.login = async function (email, password) {
+    const user = await this.findOne({
+        email : email
+    });
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password);
+        if (auth) {
+            return user;
+        }
+        throw Error('Invalid password');
+    }
+    throw Error('Invalid email');
 };
 
+const UserModel = mongoose.model('User', userSchema); // create a model from userSchema
+
+module.exports = UserModel; // export the model
