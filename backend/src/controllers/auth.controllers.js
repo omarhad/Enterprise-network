@@ -1,54 +1,56 @@
-const { User } = require("../db/sequelize");
-const { ValidationError, UniqueConstraintError } = require("sequelize");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const UserModel = require("../models/model.users");
+const { registerErrors, loginErrors } = require("../utils/errors.utils");
+const jwt = require("jsonwebtoken"); 
 
+// -----------------------------------------------------------------------------------------------
+// Token creation
+const maxAge = 1 * 24 * 60 * 60 * 1000; // maxAge limits the time the token is valid
+const createToken = (id) => {
+    return jwt.sign({
+        id
+    }, process.env.JWT_KEY, {
+        expiresIn: maxAge
+    });
+}
 
-exports.register = (req, res) => {
-  User.create(req.body) // Create a user with the body request
+// -----------------------------------------------------------------------------------------------
+// POST : Register a new user
+exports.register = async (req, res) => {
+  const { email, password, firstName, lastName } = req.body; // Get the data from the request
+
+  await UserModel.create({ email, password, firstName, lastName }) // Create a new user
     .then((user) => {
-      const message = "User has been created.";
-      res.status(201).json({ message, data: user }); // Send the response
+      const message = "The user has been created";
+      res.status(201).json({ message, data: user });
     })
     .catch((error) => {
-      if (error instanceof ValidationError) {
-        return res.status(400).json({ message: error.message, data: error });
-      }
-      if (error instanceof UniqueConstraintError) {
-        return res.status(400).json({ message: error.message, data: error });
-      }
-      const message = "The user could not be created. try again later.";
-      res.status(500).json({ message, data: error }); // Send the error
+      const err = registerErrors(error);
+      res.status(500).json({ message: err, data: error });
     });
 };
 
-exports.logIn = (req, res) => {
-  User.findOne({ where: { email: req.body.email } }) // Find a user with the email
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ message: "User not found." });
-      }
-      bcrypt.compare(req.body.password, user.password).then((isPasswordValid) => {
-          if (!isPasswordValid) {
-            const message = "The password is invalid.";
-            return res.status(401).json({ message });
-          }
+// -----------------------------------------------------------------------------------------------
+// POST : Login a user
+exports.logIn = async (req, res) => {
+  const { email, password } = req.body; // Get the data from the request
 
-          // Create a token
-          const token = jwt.sign(
-            { userId: user.id } ,
-            "RANDOM_TOKEN_SECRET",
-            { expiresIn: "24h" }
-          );
-
-          const message = "User has been logged in.";
-          res.status(200).json({ message, data: user , token }); // Send the response
-        });
-    })
-    .catch((error) => {
-      const message = "The user could not be logged in. try again later.";
-      res.status(500).json({ message, data: error }); // Send the error
+  try {
+    const user = await UserModel.login(email, password); // Login the user
+    const message = "The user has been logged in";
+    res.status(200).json({
+      message,
+      userId: user._id,
+      token: createToken(user._id), // Create a token
     });
+
+    // Error handling
+  } catch (error) { 
+    const err = loginErrors(error);
+    console.log(error);
+    res.status(400).json({ message: err, data: error });
+  }
 };
 
+// -----------------------------------------------------------------------------------------------
+// GET : logout a user
 exports.logOut = (req, res) => {};

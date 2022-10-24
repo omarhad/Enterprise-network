@@ -1,42 +1,49 @@
-module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
-    "POST",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      message: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Message is required" },
-        },
-      },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          isUrl: { msg: "Image must be an URL" },
-        },
-      },
-      likes: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      UserId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "UserId is required" },
-        },
-      },
+const mongoose = require("mongoose");
+
+const PostSchema = new mongoose.Schema(
+  {
+    posterId: {
+      type: String,
+      required: true,
     },
-    {
-      timestamps: true,
-      createdAt: "created",
-      updatedAt: false,
-    }
-  );
-};
+    message: {
+      type: String,
+      trim: true,
+      maxlength: 500,
+    },
+    picture: {
+      type: [
+        {
+          pic: String,
+        },
+      ],
+      required: true,
+      default: [],
+    },
+    video: {
+      type: String,
+    },
+    likers: {
+      type: [String],
+      required: true,
+    },
+    comments: {
+      type: [
+        {
+          commenterId: String,
+          commenterName: String,
+          text: String,
+          timestamp: Number,
+        },
+      ],
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const PostModel = mongoose.model("Post", PostSchema);
+
+module.exports = PostModel;
