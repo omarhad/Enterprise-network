@@ -4,6 +4,11 @@ const ObjectId = require("mongoose").Types.ObjectId;
 // -----------------------------------------------------------------------------------------------
 // GET :  all users
 exports.getAllUsers = async (req, res) => {
+  /**
+   * Get all users
+   * @return { Promise } users
+   */
+
   await UserModel.find()
     .select("-password") // Find all users and select all fields except password
     .then((users) => {
@@ -21,6 +26,12 @@ exports.getAllUsers = async (req, res) => {
 // -----------------------------------------------------------------------------------------------
 // GET : one user
 exports.getUser = async (req, res) => {
+  /**
+   * Get one user
+   * @param { String } id | id of the user
+   * @return { Promise } user
+   */
+
   const { id } = req.params; // Get the id from the request
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {
@@ -52,6 +63,12 @@ exports.getUser = async (req, res) => {
 //-----------------------------------------------------------------------------------------------
 // PUT : Update one user
 exports.updateUser = async (req, res) => {
+  /**
+   * Update one user
+   * @param { String } id | id of the user
+   * @return { Promise } user
+   */
+
   const { id } = req.params; // Get the id from the request
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {
@@ -81,6 +98,12 @@ exports.updateUser = async (req, res) => {
 // -----------------------------------------------------------------------------------------------
 // DELETE : Delete one user
 exports.deleteUser = async (req, res) => {
+  /**
+   * Delete one user
+   * @param { String } id | id of the user
+   * @return { Promise } user
+   */
+  
   const { id } = req.params; // Get the id from the request
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {

@@ -8,11 +8,11 @@ const uploadController = require("../controllers/upload.controllers");
 // Post routes
 router.get("/", postController.getAllPost);
 router.get('/:id', postController.readPost);
-router.post('/', postController.createPost);
+router.post('/', multer,postController.createPost);
 router.put('/:id', postController.updatePost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
-router.patch('/unlike-post/:id', postController.unlikePost);
+// router.patch('/unlike-post/:id', postController.unlikePost);
 
 
 // Routes for comment
