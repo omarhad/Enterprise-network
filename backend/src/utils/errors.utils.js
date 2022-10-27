@@ -18,9 +18,7 @@ module.exports.registerErrors = (err) => {
 };
 
 module.exports.loginErrors = (err) => {
-    let errors = { login : ''};
-
-    if (err.message.includes('email' || 'password'))
-        errors.login = 'Email is invalid or password is invalid';
+    let errors = {};
+    errors.login = 'Email is invalid or password is invalid';
     return errors;
 }

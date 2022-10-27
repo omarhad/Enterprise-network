@@ -1,17 +1,21 @@
 const UserModel = require("../models/model.users");
 const { registerErrors, loginErrors } = require("../utils/errors.utils");
-const jwt = require("jsonwebtoken"); 
+const jwt = require("jsonwebtoken");
 
 // -----------------------------------------------------------------------------------------------
 // Token creation
 const maxAge = 1 * 24 * 60 * 60 * 1000; // maxAge limits the time the token is valid
 const createToken = (id) => {
-    return jwt.sign({
-        id
-    }, process.env.JWT_KEY, {
-        expiresIn: maxAge
-    });
-}
+  return jwt.sign(
+    {
+      id,
+    },
+    process.env.JWT_KEY,
+    {
+      expiresIn: maxAge,
+    }
+  );
+};
 
 // -----------------------------------------------------------------------------------------------
 // POST : Register a new user
@@ -34,21 +38,20 @@ exports.register = async (req, res) => {
 exports.logIn = async (req, res) => {
   const { email, password } = req.body; // Get the data from the request
 
-  try {
-    const user = await UserModel.login(email, password); // Login the user
-    const message = "The user has been logged in";
-    res.status(200).json({
-      message,
-      userId: user._id,
-      token: createToken(user._id), // Create a token
-    });
-
+  await UserModel.login(email, password) // Login the user
+    .then((user) => {
+      const message = "The user has been logged in";
+      return res.status(200).json({
+        message,
+        userId: user._id,
+        token: createToken(user._id), // Create a token
+      });
+    })
     // Error handling
-  } catch (error) { 
-    const err = loginErrors(error);
-    console.log(error);
-    res.status(400).json({ message: err, data: error });
-  }
+    .catch((err) => {
+      const message = loginErrors(err);
+      return res.status(500).json({ error: message });
+    });
 };
 
 // -----------------------------------------------------------------------------------------------

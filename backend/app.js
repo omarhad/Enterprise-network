@@ -25,7 +25,6 @@ mongoose
 
 const app = express(); // Create an instance of express
 
-
 // Middleware
 app
   .use(favicon(__dirname + "/log.ico")) // Favicon
