@@ -1,18 +1,44 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "../../layouts/Button";
-import { birthdayParser, upperCase } from "../../utils/Tools";
+import { MemberInfo } from "./MemberInfo";
+import { useEffect } from "react";
 
 /**
  * Display a list of members
  * @param {Array} members // Array of members
+ * @param {Function} onDelete // Function to delete a member
  * @returns ul => list of members
  */
 export function ListMembers({ members, onDelete }) {
+  useEffect(
+    function () {
+      console.log(members);
+    },
+    [onDelete, members]
+  );
+  // const userId = JSON.parse(localStorage.getItem("user"));
+  // function checkUser() {
+  //   const user = members.find((member) => member._id === userId.userId);
+  //   if (user.isAdmin) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // const isAdmin = checkUser();
+
   return (
     <ul>
-      {members.map((member) => (
-        <Member key={member._id} member={member} onDelete={onDelete} />
+      {members[0].map((member) => (
+        <>
+          <Member
+            key={member._id}
+            member={member}
+            onDelete={onDelete}
+            isAdmin={true}
+          />
+        </>
       ))}
     </ul>
   );
@@ -21,51 +47,40 @@ export function ListMembers({ members, onDelete }) {
 /**
  * Display a member information
  * @param {Object} member // Object of member
+ * @param {Function} onDelete // Function to delete a member
+ * @param {Boolean} isAdmin // Boolean to check if user is admin
  * @returns li => member information
  */
-function Member({ member, onDelete }) {
-  const [show, setShow] = useState(false);
+function Member({ member, onDelete, isAdmin }) {
+  // console.log(member);
   const [loading, setLoading] = useState(false);
-
-  const handleShow = () => {
-    setShow(!show);
-  };
 
   const handleDelete = async function (e) {
     e.preventDefault();
     setLoading(true);
-    await onDelete(member);
+    await onDelete(member._id);
+    console.log(" id Memeber" + JSON.stringify(member._id));
   };
 
   return (
-    <li>
-      <div className="" onClick={handleShow}>
-        <div className="">
-          <img src={member.image} alt="memberAvatar" />
-        </div>
-        <h3>
-          {upperCase(member.firstName)} {upperCase(member.lastName)}
-        </h3>
-        <p>Post : {member.job}</p>
-        {!show && <span>Click to show more</span>}
-        {/* info hidden */}
-        {show && (
-          <>
-            <p>Email : {member.email}</p>
-            <p>Bio : {member.bio}</p>
-            <p>Birthday : {birthdayParser(member.birthday)}</p>
-            <p>Registered since : {birthdayParser(member.createdAt)}</p>
-          </>
-        )}
+    <>
+      <MemberInfo member={member} />
+      {isAdmin ? (
         <Button loading={loading} onClick={handleDelete}>
           Delete
         </Button>
-      </div>
-    </li>
+      ) : null}
+    </>
   );
 }
 
 ListMembers.propTypes = {
   members: PropTypes.array,
   onDelete: PropTypes.func,
+};
+
+Member.propTypes = {
+  member: PropTypes.object,
+  onDelete: PropTypes.func,
+  isAdmin: PropTypes.bool,
 };

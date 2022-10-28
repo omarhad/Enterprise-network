@@ -36,9 +36,10 @@ export default function Pages() {
       if (page === "Members") {
         fetchMembers();
       }
-    },
-    [page]
+    }
   );
+
+  // console.log(members);
 
   return (
     <>

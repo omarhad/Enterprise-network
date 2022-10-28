@@ -2,16 +2,27 @@ import { useReducer } from "react";
 import { apiFetch } from "../utils/Api";
 
 function reducer(state, action) {
-  console.log("MEMBERS_REDUCER", action.type, action);
+  console.log({
+    REDUCER: "MEMBERS_REDUCER",
+    state: state,
+    type: action.type,
+    action: action,
+  });
   switch (action.type) {
     case "FETCHING_MEMBERS":
       return { ...state, loading: true };
     case "SET_MEMBERS":
-      return { ...state, members: action.payload, loading: false };
+      return {
+        ...state,
+        massage: action.payload.message,
+        members: action.payload.data,
+        loading: false,
+      };
     case "DELETE_MEMBER":
       return {
         ...state,
-        members: state.members.filter((m) => m !== action.payload),
+        massage: action.payload.message,
+        members: action.payload,
       };
     case "ADD_MEMBER":
       return { ...state, members: [...state.members, action.payload] };
@@ -34,6 +45,7 @@ export function useMembers() {
   });
 
   return {
+    log: console.log({ members: state.members, loading: state.loading }),
     members: state.members, // array of members
     fetchMembers: async function () {
       try {
@@ -48,10 +60,16 @@ export function useMembers() {
     },
     deleteMember: async function (id_member) {
       try {
-        const member = await apiFetch(`/api/user/${id_member._id}`, {
-          method: "GET",
-        }); // Delete user from API
-        dispatch({ type: "DELETE_MEMBER", payload: member }); // Delete member from state
+        await apiFetch("/api/user/" + id_member, { method: "DELETE" }) // Delete user from API
+          .then((res) => {
+            console.log({ "before dispatch": res });
+            res = state.members[0].filter((m) => m._id !== res.data._id);
+            console.log(res);
+            dispatch({ type: "DELETE_MEMBER", payload: res }); // Delete member from state
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } catch (err) {
         console.error(err);
       }

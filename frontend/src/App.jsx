@@ -8,7 +8,7 @@ export default function App() {
 
   useEffect(() => {
     // Check if the user is logged in
-    const user = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
     if (user) {
       setIsConnect(true);
     } else {

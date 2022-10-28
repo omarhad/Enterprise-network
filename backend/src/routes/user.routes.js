@@ -8,9 +8,9 @@ const authController = require("../controllers/auth.controllers");
 const uploadController = require("../controllers/upload.controllers");
 
 // Auth routes
-router.post( "/register", authController.register);
-router.post('/login', authController.logIn);
-router.get('/logout', authController.logOut);
+router.post("/register", authController.register);
+router.post("/login", authController.logIn);
+router.get("/logout", authController.logOut);
 
 // User routes
 router.get("/", userController.getAllUsers);
@@ -19,6 +19,6 @@ router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 
 // Upload routes
-router.post('/upload', multer, uploadController.uploadProfil);
+router.post("/upload", multer, uploadController.uploadProfil);
 
 module.exports = router;

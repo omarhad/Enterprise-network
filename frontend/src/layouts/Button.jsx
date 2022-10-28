@@ -23,7 +23,7 @@ export default function Button({
     <button type={htmlType} disabled={loading} {...props}>
       {loading ? (
         <>
-          <Loader /> Chargement...
+          <Loader> Chargement...</Loader>
         </>
       ) : (
         children

@@ -13,7 +13,7 @@ exports.getAllUsers = async (req, res) => {
     .select("-password") // Find all users and select all fields except password
     .then((users) => {
       const message = "All users have been found";
-      res.status(200).json({ message, data: users }); // Send the response OK and the users
+      res.status(200).json({ message, data: [users] }); // Send the response OK and the users
     })
 
     // Error handling
@@ -103,7 +103,7 @@ exports.deleteUser = async (req, res) => {
    * @param { String } id | id of the user
    * @return { Promise } user
    */
-  
+
   const { id } = req.params; // Get the id from the request
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {

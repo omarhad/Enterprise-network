@@ -3,7 +3,7 @@ import React from "react";
 export default function Navbar({ currentPage, onClick }) {
   // Function remove the token from the local storage and redirect to the login page
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   const navClass = function (page) {

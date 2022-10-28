@@ -28,7 +28,7 @@ export function LoginForm({ onConnect }) {
           },
         });
         onConnect(user); // call onConnect function and send response data
-        localStorage.setItem("token", JSON.stringify(user.token)); // store token in local storage
+        localStorage.setItem("user", JSON.stringify(user)); // store token in local storage
       } catch (error) {
         if (error instanceof ApiErrors) {
           setError(error.errors); // set error message
