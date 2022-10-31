@@ -3,6 +3,6 @@
  * @param {String} param | The message to be displayed
  * @returns
  */
-export function Alert({ children }) {
-  return <div>{children}</div>;
+export function Alert({ children, ...props }) {
+  return <div {...props}>{children}</div>;
 }

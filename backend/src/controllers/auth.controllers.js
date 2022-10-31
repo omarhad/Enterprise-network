@@ -25,6 +25,8 @@ exports.register = async (req, res) => {
   await UserModel.create({ email, password, firstName, lastName, isAdmin }) // Create a new user
     .then((user) => {
       const message = "The user has been created";
+      //copy the user object without the password
+      user.password = undefined;
       res.status(201).json({ message, data: user });
     })
     .catch((error) => {

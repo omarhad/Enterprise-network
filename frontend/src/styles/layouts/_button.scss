@@ -1,0 +1,35 @@
+.button {
+    background: $primaire;
+    box-shadow: $shadowPrimaire;
+    height: 50px;
+    min-width: 130px;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: #FFFFFF;
+    transition: all 0.2s ease-in-out;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &:hover {
+        background: $tertiaire;
+        color: $secondaire;
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.back {
+    z-index: 100;
+}
+
+@media screen and (min-width: 1024px) {
+    .back {
+        display: none;
+    }
+}

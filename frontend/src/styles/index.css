@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  font-family: "Lato", sans-serif;
+}
+
+.arrow {
+  height: 2rem;
+  width: 2rem;
+  -o-object-fit: contain;
+     object-fit: contain;
+  box-sizing: border-box;
+  opacity: 0.8;
+}
+
+.Login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFE9E9;
+}
+.Login__header {
+  width: 100vw;
+  height: 10vh;
+  background-color: #4E5166;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 1rem;
+  position: fixed;
+  z-index: 100;
+}
+.Login__content {
+  height: 90vh;
+  transform: translateY(10vh);
+}
+
+.loginPage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.loginPage__title {
+  text-align: center;
+}
+.loginPage__title h1 {
+  font-size: 30px;
+  line-height: 36px;
+  color: #4E5166;
+}
+.loginPage__grp {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  max-width: 600px;
+  justify-content: space-between;
+}
+.loginPage__grp__connect {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #4E5166;
+  -webkit-text-stroke: 1px rgba(253, 45, 1, 0.3);
+}
+.loginPage__grp__share {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #4E5166;
+  -webkit-text-stroke: 1px rgba(253, 45, 1, 0.3);
+}
+.loginPage__img {
+  width: 100%;
+  max-width: 500px;
+  opacity: 0.7;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.loginPage__engage {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #4E5166;
+  -webkit-text-stroke: 1px rgba(253, 45, 1, 0.3);
+}
+.loginPage__button {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .log__loginPage {
+    width: 60vw;
+  }
+  .activeForm {
+    display: flex;
+    position: static;
+    width: 40vw;
+    height: 90vh;
+  }
+}
+.login-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-form__btn {
+  position: absolute;
+  top: 2.5vh;
+}
+.login-form .alert {
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.login-form__group {
+  height: auto;
+  width: 95%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  background-color: #4E5166;
+  box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+  border-radius: 0 1rem 0 1rem;
+}
+.login-form__group__content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.login-form__group__content input {
+  width: 90%;
+  height: 3.5rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.login-form__group__content input.error {
+  border: 2px solid red;
+}
+
+.button {
+  background: #c12000;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  height: 50px;
+  min-width: 130px;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 25px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #FFFFFF;
+  transition: all 0.2s ease-in-out;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.button:hover {
+  background: #4E5166;
+  color: #FFD7D7;
+  transition: all 0.3s ease-in-out;
+}
+
+.back {
+  z-index: 100;
+}
+
+@media screen and (min-width: 1024px) {
+  .back {
+    display: none;
+  }
+}/*# sourceMappingURL=index.css.map */

@@ -6,17 +6,18 @@ export function Field({
   children,
   type = "text",
   error,
+  errType,
   refField = null,
   ...props
 }) {
   return (
-    <div className="form-group">
+    <>
       {children && <label htmlFor={name}>{children}</label>}
 
       <input type={type} name={name} id={name} ref={refField} {...props} />
 
-      {error && <p className="">{error[name]}</p>}
-    </div>
+      {error && <p className="">{error[errType]}</p>}
+    </>
   );
 }
 

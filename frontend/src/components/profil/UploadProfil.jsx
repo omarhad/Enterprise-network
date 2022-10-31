@@ -29,6 +29,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
   newData[inputName] = data;
 
   if (inputName === "password") {
+    // If the input is password, we don't show the data
     profil = {
       ...profil,
       password: "********",
@@ -36,6 +37,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
   }
 
   if (inputName === "birthday") {
+    // If the input is birthday, we parse the date
     profil = {
       ...profil,
       birthday: birthdayParser(profil.birthday),

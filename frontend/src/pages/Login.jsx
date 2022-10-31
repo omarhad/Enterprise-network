@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Button from "../layouts/Button";
 import { LoginForm } from "../components/login/LoginForm";
 import { RegisterForm } from "../components/login/RegisterForm";
+import { LoginPage } from "../components/login/LoginPage";
 
 /**
  * Display Login or Register form
@@ -10,15 +10,26 @@ import { RegisterForm } from "../components/login/RegisterForm";
  * @returns
  */
 export default function Login({ onConnect }) {
-  const [page, setPage] = useState("login"); // Store the current page
+  const [page, setPage] = useState("loginPage"); // Store the current page
 
+  const handleClick = (e) => {
+    setPage(e.target.id); // Set the current page
+  };
   return (
-    <>
-      {page === "login" && <LoginForm onConnect={onConnect} />}
-      {page === "register" && <RegisterForm onConnect={onConnect} />}
-      <Button onClick={() => setPage("login")}>Login</Button>
-      <Button onClick={() => setPage("register")}>Register</Button>
-    </>
+    <div className="Login">
+      <div className="Login__header">
+        <img src="./img/logo.png" alt="logo" />
+      </div>
+      <div className="Login__content">
+        {page === "loginPage" && <LoginPage onChoice={handleClick} />}
+        {page === "login" && (
+          <LoginForm onConnect={onConnect} onChoice={handleClick} />
+        )}
+        {page === "register" && (
+          <RegisterForm onConnect={onConnect} onChoice={handleClick} />
+        )}
+      </div>
+    </div>
   );
 }
 

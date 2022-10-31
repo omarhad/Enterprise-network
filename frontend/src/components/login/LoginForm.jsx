@@ -4,8 +4,9 @@ import { apiFetch, ApiErrors } from "../../utils/Api";
 import { verificationEmail, verificationPassword } from "../../utils/Regex";
 import { Alert } from "../../utils/Alert";
 import Button from "../../layouts/Button";
+import { Field } from "../../layouts/Field";
 
-export function LoginForm({ onConnect }) {
+export function LoginForm({ onConnect, onChoice }) {
   const [error, setError] = useState(null); // state variable to store error message
   const [loading, setLoading] = useState(false); // state variable to store loading state
 
@@ -31,6 +32,7 @@ export function LoginForm({ onConnect }) {
         localStorage.setItem("user", JSON.stringify(user)); // store token in local storage
       } catch (error) {
         if (error instanceof ApiErrors) {
+          console.log(error);
           setError(error.errors); // set error message
         } else {
           console.log(error);
@@ -38,7 +40,7 @@ export function LoginForm({ onConnect }) {
         setLoading(false); // set loading state to false
       }
     } else {
-      const message = "please enter a valid email and password";
+      const message = "Please enter a valid email and password";
       setError(message);
       setLoading(false);
     }
@@ -46,18 +48,33 @@ export function LoginForm({ onConnect }) {
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
-      {error && <Alert>{error.login || error}</Alert>}
-      <div className="login-form__content">
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" required />
-      </div>
-      <div className="login-form__content">
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" required />
-      </div>
-      <Button disabled={loading} type="submit" className="btn btn-primary">
-        Login
+      <Button
+        id="loginPage"
+        className="button back login-form__btn"
+        onClick={onChoice}
+      >
+        Back
       </Button>
+      <div className="alert">
+        {error && <Alert>{error.login || error}</Alert>}
+      </div>
+
+      <div className="login-form__group">
+        <div className="login-form__group__content">
+          <Field name="email" type="email" placeholder="Email" required />
+        </div>
+        <div className="login-form__group__content">
+          <Field
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <Button loading={loading} type="submit" className="button">
+          Login
+        </Button>
+      </div>
     </form>
   );
 }
