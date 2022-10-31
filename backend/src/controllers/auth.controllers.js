@@ -20,9 +20,9 @@ const createToken = (id) => {
 // -----------------------------------------------------------------------------------------------
 // POST : Register a new user
 exports.register = async (req, res) => {
-  const { email, password, firstName, lastName } = req.body; // Get the data from the request
+  const { email, password, firstName, lastName, isAdmin = false } = req.body; // Get the data from the request
 
-  await UserModel.create({ email, password, firstName, lastName }) // Create a new user
+  await UserModel.create({ email, password, firstName, lastName, isAdmin }) // Create a new user
     .then((user) => {
       const message = "The user has been created";
       res.status(201).json({ message, data: user });

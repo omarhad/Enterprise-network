@@ -1,4 +1,6 @@
 const UserModel = require("../models/model.users");
+const bcrypt = require("bcrypt"); // Bcrypt : gestionnaire de hashage
+const { uploadErrors } = require("../utils/errors.utils");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 // -----------------------------------------------------------------------------------------------
@@ -13,7 +15,7 @@ exports.getAllUsers = async (req, res) => {
     .select("-password") // Find all users and select all fields except password
     .then((users) => {
       const message = "All users have been found";
-      res.status(200).json({ message, data: [users] }); // Send the response OK and the users
+      res.status(200).json({ message, data: users }); // Send the response OK and the users
     })
 
     // Error handling
@@ -76,6 +78,19 @@ exports.updateUser = async (req, res) => {
     return res.status(400).json({ message, data: id });
   }
 
+  // if the user wants to update his password
+  if (req.body.password) {
+    // Hash the password
+    await bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        req.body.password = hash;
+      })
+      .catch((error) => {
+        const message = "The password could not be updated. try again later.";
+        res.status(500).json({ message, data: error });
+      });
+  }
   // Update the user
   await UserModel.findByIdAndUpdate(id, req.body, { new: true })
     .select("-password") // Find the user by id and select all fields except password
@@ -90,8 +105,8 @@ exports.updateUser = async (req, res) => {
       res.status(200).json({ message, data: user }); // Send the response OK and the user
     })
     .catch((error) => {
-      const message = "The user could not be updated. try again later.";
-      res.status(500).json({ message, data: error });
+      const err = uploadErrors(error);
+      res.status(500).json({ message: err, data: error });
     });
 };
 

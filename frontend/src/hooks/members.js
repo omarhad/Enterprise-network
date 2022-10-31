@@ -18,35 +18,60 @@ function reducer(state, action) {
         members: action.payload.data,
         loading: false,
       };
+    case "SET_PROFIL":
+      return {
+        ...state,
+        massage: action.payload.message,
+        profil: action.payload.data,
+        loading: false,
+      };
     case "DELETE_MEMBER":
       return {
         ...state,
         massage: action.payload.message,
-        members: action.payload,
+        members: state.members.filter(
+          (member) => member._id !== action.payload.data._id
+        ),
+        loading: false,
       };
     case "ADD_MEMBER":
-      return { ...state, members: [...state.members, action.payload] };
+      return {
+        ...state,
+        message: action.payload.message,
+        members: [...state.members, action.payload.data],
+      };
     case "UPDATE_MEMBER":
       return {
         ...state,
+        message: action.payload.message,
+        profil: action.payload.data,
         members: state.members.map((m) =>
-          m === action.target ? action.payload : m
+          m === action.target ? action.payload.data : m
         ),
       };
+
     default:
-      break;
+      throw new Error("Unknown action " + action.type);
   }
 }
 
 export function useMembers() {
   const [state, dispatch] = useReducer(reducer, {
     members: null,
+    profil: null,
     loading: false,
   });
 
   return {
-    log: console.log({ members: state.members, loading: state.loading }),
+    log: console.log("Log useMembers : ", {
+      state,
+      members: state.members,
+      profil: state.profil,
+      loading: state.loading,
+      message: state.message,
+    }),
     members: state.members, // array of members
+    profil: state.profil, // single member
     fetchMembers: async function () {
       try {
         if (state.loading || state.members) return; // Don't fetch if already loading or if already fetched
@@ -58,21 +83,35 @@ export function useMembers() {
         console.error(err);
       }
     },
-    deleteMember: async function (id_member) {
+    fetchMember: async function (id) {
       try {
-        await apiFetch("/api/user/" + id_member, { method: "DELETE" }) // Delete user from API
+        if (state.loading || state.profil) return; // Don't fetch if already loading or if already fetched
+
+        const profil = await apiFetch(`/api/user/${id}`); // Fetch single user from API
+        dispatch({ type: "SET_PROFIL", payload: profil });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    deleteMember: async function (member) {
+      try {
+        return await apiFetch("/api/user/" + member._id, { method: "DELETE" }) // Delete user from API
           .then((res) => {
-            console.log({ "before dispatch": res });
-            res = state.members[0].filter((m) => m._id !== res.data._id);
-            console.log(res);
             dispatch({ type: "DELETE_MEMBER", payload: res }); // Delete member from state
-          })
-          .catch((err) => {
-            console.error(err);
           });
       } catch (err) {
         console.error(err);
       }
+    },
+    editMembers: async function (member, data) {
+      const response = await apiFetch("/api/user/" + member._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      dispatch({ type: "UPDATE_MEMBER", payload: response, target: member });
     },
   };
 }

@@ -13,6 +13,7 @@ export default function Button({
   children,
   type = "primary",
   loading = false,
+  refButton = null,
   ...props
 }) {
   let htmlType = null;
@@ -20,7 +21,7 @@ export default function Button({
     htmlType = "submit";
   }
   return (
-    <button type={htmlType} disabled={loading} {...props}>
+    <button type={htmlType} disabled={loading} ref={refButton} {...props}>
       {loading ? (
         <>
           <Loader> Chargement...</Loader>

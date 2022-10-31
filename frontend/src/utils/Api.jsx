@@ -21,11 +21,14 @@ export async function apiFetch(endpoint, option = {}) {
     return null;
   }
   const responseData = await response.json();
-  if (response.ok) {
+
+  if (response.ok && response.code !== 11000) {
+    console.log("API LOG / : ", responseData);
     return responseData;
   } else {
-    if (responseData.error) {
-      throw new ApiErrors(responseData.error);
+    if (responseData) {
+      console.log("API LOGERROR / : ", responseData);
+      throw new ApiErrors(responseData);
     }
   }
 }
