@@ -17,6 +17,14 @@
     padding-left: 1rem;
     padding-right: 1rem;
 
+    &--delete {
+        width: 2rem;
+
+        svg {
+            transform: scale(0.8);
+        }
+    }
+
     &:hover {
         background: $tertiaire;
         color: $secondaire;

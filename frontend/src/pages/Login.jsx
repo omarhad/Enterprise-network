@@ -18,7 +18,7 @@ export default function Login({ onConnect }) {
   return (
     <div className="Login">
       <div className="Login__header">
-        <img src="./img/logo.png" alt="logo" />
+        <img src="./images/logo/logo-m.png" alt="logo" />
       </div>
       <div className="Login__content">
         {page === "loginPage" && <LoginPage onChoice={handleClick} />}

@@ -32,8 +32,7 @@ export function LoginForm({ onConnect, onChoice }) {
         localStorage.setItem("user", JSON.stringify(user)); // store token in local storage
       } catch (error) {
         if (error instanceof ApiErrors) {
-          console.log(error);
-          setError(error.errors); // set error message
+          setError(error.errors.error); // set error message
         } else {
           console.log(error);
         }

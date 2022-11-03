@@ -1,0 +1,55 @@
+.uploadInfo {
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+
+    &__name {
+        position: relative;
+        width: 275px;
+
+        span {
+            position: absolute;
+            color: $primaire;
+            transform: translate(10px, -7px);
+            font-size: .65em;
+            padding: 0 10px;
+            background: $primaireBackground;
+            border-left: 1px solid $primaire;
+            border-right: 1px solid $primaire;
+            letter-spacing: 0.2em;
+        }
+
+        .beforeInput {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid $primaire;
+            background: transparent;
+            border-radius: 5px;
+            outline: none;
+            color: $tertiaire;
+            font-size: 1em;
+        }
+
+        .input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid $primaire;
+            background: $tertiaire;
+            color: $secondaire;
+            border-radius: 5px;
+            outline: none;
+            font-size: 1em;
+        }
+    }
+}
+
+.buttonUpload {
+
+    position: absolute;
+    bottom: 2rem;
+
+}

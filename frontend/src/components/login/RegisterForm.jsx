@@ -61,9 +61,17 @@ export function RegisterForm({ onConnect, onChoice }) {
         setLoading(false); // set loading state to false
       }
     } else {
-      const message = "please enter a valid information";
-      setError(message);
-      setLoading(false);
+      if (!verificationPassword(data.password)) {
+        const message =
+          "password must be at least 6 characters with at least number, uppercase letter, lowercase letter and special character";
+        setError(message); // set error message
+
+        setLoading(false);
+      } else {
+        const message = "please enter a valid information";
+        setError(message);
+        setLoading(false);
+      }
     }
   };
 

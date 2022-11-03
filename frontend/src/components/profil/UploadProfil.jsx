@@ -87,14 +87,17 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
         {
           /** Show the form if the user click on first name */
           updateForm === false && (
-            <div>
-              <p
-                className="beforeInput"
-                onClick={() => setUpdateForm(!updateForm)}
-              >
-                {name} : {profil && profil[inputName]}
-              </p>
-            </div>
+            <>
+              <div>
+                <span>{name} : </span>
+                <p
+                  className="beforeInput"
+                  onClick={() => setUpdateForm(!updateForm)}
+                >
+                  {profil && profil[inputName]}
+                </p>
+              </div>
+            </>
           )
         }
         {
@@ -102,6 +105,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
           updateForm && (
             <>
               <div>
+                <span>{name} :</span>
                 <Field
                   name={inputName}
                   className="input"
@@ -110,22 +114,25 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
                   refField={refOne}
                   error={error}
                   type={type}
-                >
-                  {name}
-                </Field>
+                />
               </div>
-              <Button
-                type="submit"
-                refButton={refTwo}
-                className="button buttonUpload"
-                loading={loading}
-              >
-                Validate
-              </Button>
             </>
           )
         }
       </form>
+      {
+        /** Hide the button validate if the user click outside the form */
+        updateForm && (
+          <Button
+            type="submit"
+            refButton={refTwo}
+            className="button buttonUpload"
+            loading={loading}
+          >
+            Validate
+          </Button>
+        )
+      }
     </>
   );
 }

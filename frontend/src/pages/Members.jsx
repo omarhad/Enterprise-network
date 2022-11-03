@@ -13,7 +13,7 @@ import { AllMembers } from "../components/members/ListMembers";
  */
 export default function Members({ members, onDelete, isAdmin, onEdit }) {
   return (
-    <div>
+    <>
       <h1>List Members</h1>
       {members === null ? (
         <Loader />
@@ -25,7 +25,7 @@ export default function Members({ members, onDelete, isAdmin, onEdit }) {
           onEdit={onEdit}
         />
       )}
-    </div>
+    </>
   );
 }
 

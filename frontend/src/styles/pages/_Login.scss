@@ -23,4 +23,13 @@
         transform: translateY(10vh);
     }
 
+    .alert {
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        text-align: center;
+        width: 95vw;
+    }
+
 }

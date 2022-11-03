@@ -4,31 +4,33 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 // -----------------------------------------------------------------------------------------------
 // POST : upload picture for user
-exports.uploadProfil = (req, res) => {
+exports.uploadProfil = async (req, res) => {
   /**
    * upload picture for user
    * @param { String } id | id of the user
    * @param { File } file | picture of the user
    * @return { String } message | message of the response
    */
-
-  const { id } = req.body._id; // Get the id from the params
-
+  const { id } = req.body; // Get the id from the request
   const updatedRecord = {
     image: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   };
-
-  UserModel.updateOne({ id }, { $set: updatedRecord }) // Update the picture user
-    .then(() => {
-      const message = "The profile picture has been updated";
-      res.status(200).json({ message });
-    })
+  try {
+    const user = await UserModel.findById(id); // Find the user by id
+    if (!user) {
+      const message = `User not found`;
+      return res.status(404).json({ message });
+    }
+    return UserModel.findByIdAndUpdate(id, updatedRecord, { new: true }) // Find the user by id and update the picture
+      .then((user) => {
+        const message = "The user picture has been updated";
+        res.status(200).json({ message, data: user }); // Send the response
+      });
+  } catch (error) {
     // Error handling
-    .catch((error) => {
-      const message =
-        "The profile picture could not be updated. try again later.";
-      res.status(500).json({ message, error });
-    });
+    const message = "The picture could not be updated. try again later.";
+    res.status(500).json({ message, error });
+  }
 };
 
 // -----------------------------------------------------------------------------------------------
@@ -113,7 +115,7 @@ exports.deleteUploadPost = async (req, res) => {
           return res.status(403).json({ message });
         }
         const picture = post.picture.find((pic) => pic._id == picId); // Find the picture by id
-        if(!picture) {
+        if (!picture) {
           const message = `Picture not found`;
           return res.status(400).json({ message, data: id });
         }

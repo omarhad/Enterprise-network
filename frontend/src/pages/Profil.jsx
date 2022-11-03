@@ -1,20 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UploadProfil from "../components/profil/UploadProfil";
+import { UploadPicture } from "../components/profil/UploadPicture";
 
 /**
  * Component Profil
  * @param {Object} profil // Response from API with all members
  * @param {Function} onDelete // Function to delete a member
  * @param {Function} onEdit // Function to edit a member
+ * @param {Function} uploadPicture // Function to upload picture user
  * @returns div => Component Profil with all information about the user
  */
-export default function Profil({ profil, onDelete, onEdit }) {
+export default function Profil({ profil, onEdit, uploadPicture }) {
   return (
     <div className="profilContent">
       <div className="profilContent__img">
-        <img className="profilImg" src="#" alt="user-pic" />
-        Upload image
+        <img className="profilImg" src={profil.image} alt="user-pic" />
+        <UploadPicture uploadPicture={uploadPicture} profil={profil} />
         <div className="profilContent__img__arrow">
           <img
             className="arrow"

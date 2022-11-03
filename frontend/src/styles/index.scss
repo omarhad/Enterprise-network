@@ -4,10 +4,16 @@
 
 // Style pages
 @import './pages/Login';
+@import './pages/index';
 
 // Style components
 @import './components/LoginPage';
 @import './components/LoginForm';
+@import './components/Members';
+@import './components/Profil';
+@import './components/UploadProfil';
 
 // Style layouts
 @import './layouts/button';
+@import './layouts/navBar';
+@import './layouts/navItems';

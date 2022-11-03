@@ -14,11 +14,19 @@ export default function App() {
     } else {
       setIsConnect(false);
     }
-  }, []);
+  }, [isConnect]);
 
   if (isConnect === null) {
     return null;
   }
 
-  return <>{isConnect ? <Pages /> : <Login onConnect={setIsConnect} />}</>;
+  return (
+    <>
+      {isConnect ? (
+        <Pages onConnect={setIsConnect} />
+      ) : (
+        <Login onConnect={setIsConnect} />
+      )}
+    </>
+  );
 }

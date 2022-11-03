@@ -13,7 +13,7 @@ import { Loader } from "../../layouts/Loader";
  */
 export function AllMembers({ members, onDelete, isAdmin, onEdit }) {
   return (
-    <div>
+    <>
       {members === null ? (
         <Loader />
       ) : (
@@ -24,7 +24,7 @@ export function AllMembers({ members, onDelete, isAdmin, onEdit }) {
           onEdit={onEdit}
         />
       )}
-    </div>
+    </>
   );
 }
 
@@ -45,7 +45,7 @@ AllMembers.propTypes = {
  */
 function ListMembers({ members, onDelete, isAdmin, onEdit }) {
   return (
-    <ul>
+    <ul className="listMembers">
       {members.map((member) => (
         <Member
           key={member._id}

@@ -9,7 +9,7 @@ import Profil from "./Profil";
  * Display the different pages
  * @returns {JSX.Element} The pages to display
  */
-export default function Pages() {
+export default function Pages({ onConnect }) {
   const [page, setPage] = useState("home"); // Store the current page
 
   const {
@@ -19,9 +19,16 @@ export default function Pages() {
     deleteMember, // Function to delete a member
     editMembers, // Function to edit a member
     fetchMember, // Function to fetch the current member
+    uploadPicture, // Function to upload picture user
   } = useMembers();
 
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
+
+  // function to logout
+  const onLogout = () => {
+    localStorage.removeItem("user"); // Remove the user information from localStorage
+    onConnect(false);
+  };
   const admin = () => {
     // Function to know if user is admin
     if (members) {
@@ -31,6 +38,7 @@ export default function Pages() {
       return false;
     }
   };
+
   const userAdmin = admin(); // Store the result of the function admin
 
   let content = null; // Store the content of the page
@@ -49,7 +57,12 @@ export default function Pages() {
       break;
     case "Profil":
       content = (
-        <Profil profil={profil} onEdit={editMembers} onDelete={deleteMember} />
+        <Profil
+          profil={profil}
+          onEdit={editMembers}
+          onDelete={deleteMember}
+          uploadPicture={uploadPicture}
+        />
       );
       break;
     default:
@@ -60,18 +73,25 @@ export default function Pages() {
   useEffect(
     // Fetch list members when member page
     function () {
-      if (page === "Members" || page === "Profil") {
+      if (page === "Members" || page === "Profil" || page === "Home") {
         fetchMembers();
+      }
+      if (!profil) {
         fetchMember(user.userId);
       }
     },
-    [page, fetchMembers, fetchMember, user.userId]
+    [page, profil, fetchMembers, fetchMember, user.userId]
   );
 
   return (
-    <>
-      <Navbar currentPage={page} onClick={setPage} />
-      {content}
-    </>
+    <div className="main">
+      <Navbar
+        currentPage={page}
+        onPage={setPage}
+        profil={profil}
+        onLogout={onLogout}
+      />
+      <div className="main__content">{content}</div>
+    </div>
   );
 }

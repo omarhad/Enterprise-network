@@ -46,7 +46,16 @@ function reducer(state, action) {
         message: action.payload.message,
         profil: action.payload.data,
         members: state.members.map((m) =>
-          m === action.target ? action.payload.data : m
+          m._id === action.target._id ? action.payload.data : m
+        ),
+      };
+    case "UPDATE_PICTURE":
+      return {
+        ...state,
+        message: action.payload.message,
+        profil: action.payload.data,
+        members: state.members.map((m) =>
+          m._id === action.target._id ? action.payload.data : m
         ),
       };
 
@@ -87,6 +96,7 @@ export function useMembers() {
       try {
         if (state.loading || state.profil) return; // Don't fetch if already loading or if already fetched
 
+        dispatch({ type: "FETCHING_MEMBERS" }); // Set loading to true
         const profil = await apiFetch(`/api/user/${id}`); // Fetch single user from API
         dispatch({ type: "SET_PROFIL", payload: profil });
       } catch (err) {
@@ -105,13 +115,20 @@ export function useMembers() {
     },
     editMembers: async function (member, data) {
       const response = await apiFetch("/api/user/" + member._id, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
       dispatch({ type: "UPDATE_MEMBER", payload: response, target: member });
+    },
+    uploadPicture: async function (data) {
+      const response = await apiFetch("/api/user/upload/", {
+        method: "POST",
+        body: data,
+      });
+      dispatch({ type: "UPDATE_PICTURE", payload: response, target: data });
     },
   };
 }
