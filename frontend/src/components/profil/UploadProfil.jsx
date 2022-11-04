@@ -12,7 +12,7 @@ import { birthdayParser } from "../../utils/Tools";
  * @param {Object} name // Name of the input
  * @returns form => Component UploadLastName with all information about the user
  */
-export default function UploadProfil({ profil, onEdit, name, type }) {
+export default function UploadProfil({ profil, onEdit, name, type, message }) {
   let inputName = "";
   if (name.split(" ")[1]) {
     inputName = name.split(" ")[0].toLowerCase() + name.split(" ")[1];
@@ -50,10 +50,11 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
     setError(null);
     setLoading(true);
 
-    await onEdit(profil, newData) // Call the function onEdit to call the API
+    await onEdit(profil._id, newData) // Call the function onEdit to call the API
       .then(() => {
         setLoading(false);
         setUpdateForm(false); // Hide the form
+        setError(message); // Show the message
       })
       .catch((error) => {
         if (error instanceof ApiErrors) {
@@ -74,6 +75,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
   const refTwo = useRef(null);
 
   const handleClickOutside = (event) => {
+    setError(null);
     // Function to hide the form when the user click outside the form
     if (refOne.current && !refOne.current.contains(event.target)) {
       if (refTwo.current && !refTwo.current.contains(event.target)) {
@@ -83,6 +85,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
   };
   return (
     <>
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handelUpdateName} className="uploadInfo__name">
         {
           /** Show the form if the user click on first name */
@@ -128,6 +131,7 @@ export default function UploadProfil({ profil, onEdit, name, type }) {
             refButton={refTwo}
             className="button buttonUpload"
             loading={loading}
+            onClick={handelUpdateName}
           >
             Validate
           </Button>

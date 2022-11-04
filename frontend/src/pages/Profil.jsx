@@ -38,36 +38,42 @@ export default function Profil({ profil, onEdit, uploadPicture }) {
             onEdit={onEdit}
             name="First Name"
             type="text"
+            message="Your first name has been updated"
           />
           <UploadProfil
             profil={profil}
             onEdit={onEdit}
             name="Last Name"
             type="text"
+            message="Your last name has been updated"
           />
           <UploadProfil
             profil={profil}
             onEdit={onEdit}
             name="Email"
             type="email"
+            message="Your email has been updated"
           />
           <UploadProfil
             profil={profil}
             onEdit={onEdit}
             name="Password"
             type="password"
+            message="Your password has been updated"
           />
           <UploadProfil
             profil={profil}
             onEdit={onEdit}
             name="Bio"
             type="text"
+            message="Your bio has been updated"
           />
           <UploadProfil
             profil={profil}
             onEdit={onEdit}
             name="Birthday"
             type="date"
+            message="Your birthday has been updated"
           />
         </div>
       </div>

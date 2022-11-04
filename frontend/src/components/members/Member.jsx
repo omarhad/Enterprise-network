@@ -19,8 +19,7 @@ export function Member({ member, onDelete, isAdmin }) {
     setShow(!show);
   };
 
-  const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Store the state of the button to delete a member
 
   const handleDelete = async function (e) {
     // Delete a member

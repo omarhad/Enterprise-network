@@ -1,7 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 import LoginPageLogo from "../../utils/LoginPageLogo";
 import Button from "../../layouts/Button";
 
+/**
+ * Function to display login page
+ * @param {Function} onChoice Function to choice the page
+ * @returns div => login page | display login page
+ */
 export function LoginPage({ onChoice }) {
   return (
     <div className="loginPage">
@@ -27,3 +33,8 @@ export function LoginPage({ onChoice }) {
     </div>
   );
 }
+
+// declare the prop types
+LoginPage.propTypes = {
+  onConnect: PropTypes.func.isRequired,
+};

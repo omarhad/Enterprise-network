@@ -10,6 +10,12 @@ import {
 import Button from "../../layouts/Button";
 import { Field } from "../../layouts/Field";
 
+/**
+ * Function to register user
+ * @param {Function} onConnect Function to check if user is connected
+ * @param {Function} onChoice Function to choice the page
+ * @returns form => register | form to register user
+ */
 export function RegisterForm({ onConnect, onChoice }) {
   const [error, setError] = useState(null); // state variable to store error message
   const [loading, setLoading] = useState(false); // state variable to store loading state
@@ -23,12 +29,13 @@ export function RegisterForm({ onConnect, onChoice }) {
     const data = Object.fromEntries(new FormData(e.target)); // get form data and convert form data to object
 
     if (
+      // check that the data is valid
       verificationEmail(data.email) &&
       verificationPassword(data.password) &&
       verificationVarious(data.firstName) &&
       verificationVarious(data.lastName)
     ) {
-      // request to register$
+      // request to register
       try {
         const user = await apiFetch("/api/user/register", {
           method: "POST",
@@ -61,6 +68,7 @@ export function RegisterForm({ onConnect, onChoice }) {
         setLoading(false); // set loading state to false
       }
     } else {
+      // exeption for password
       if (!verificationPassword(data.password)) {
         const message =
           "password must be at least 6 characters with at least number, uppercase letter, lowercase letter and special character";
@@ -121,4 +129,5 @@ export function RegisterForm({ onConnect, onChoice }) {
 // declare the prop types
 RegisterForm.propTypes = {
   onConnect: PropTypes.func.isRequired,
+  onChoice: PropTypes.func,
 };

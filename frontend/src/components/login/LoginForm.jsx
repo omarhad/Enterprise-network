@@ -6,6 +6,12 @@ import { Alert } from "../../utils/Alert";
 import Button from "../../layouts/Button";
 import { Field } from "../../layouts/Field";
 
+/**
+ * Function to login user
+ * @param {Function} onConnect Function to check if user is connected
+ * @param {Function} onChoice Function to choice the page
+ * @returns form => login | form to connect user
+ */
 export function LoginForm({ onConnect, onChoice }) {
   const [error, setError] = useState(null); // state variable to store error message
   const [loading, setLoading] = useState(false); // state variable to store loading state
@@ -81,4 +87,5 @@ export function LoginForm({ onConnect, onChoice }) {
 // declare the prop types
 LoginForm.propTypes = {
   onConnect: PropTypes.func.isRequired,
+  onChoice: PropTypes.func,
 };

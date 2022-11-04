@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMembers } from "../hooks/members";
+import { usePosts } from "../hooks/posts";
 import Navbar from "../layouts/Navbar";
 import Home from "./Home";
 import Members from "./Members";
@@ -7,6 +8,7 @@ import Profil from "./Profil";
 
 /**
  * Display the different pages
+ * @param {Function} onConnect // State to verify if the user is logged in
  * @returns {JSX.Element} The pages to display
  */
 export default function Pages({ onConnect }) {
@@ -22,7 +24,30 @@ export default function Pages({ onConnect }) {
     uploadPicture, // Function to upload picture user
   } = useMembers();
 
+  const {
+    // Response from API with all posts
+    posts,
+    fetchPosts,
+    addPost,
+  } = usePosts(); // Function to fetch all posts
+
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
+
+  useEffect(
+    // Fetch list members when different pages are displayed
+    function () {
+      if (page === "Members" || !members) {
+        fetchMembers();
+      }
+      if (page === "Profil" || !profil) {
+        fetchMember(user.userId);
+      }
+      if (page === "Home" && !posts) {
+        fetchPosts(user.userId);
+      }
+    },
+    [page, members, profil, user, posts, fetchMembers, fetchMember, fetchPosts]
+  );
 
   // function to logout
   const onLogout = () => {
@@ -44,7 +69,15 @@ export default function Pages({ onConnect }) {
   let content = null; // Store the content of the page
   switch (page) {
     case "Home":
-      content = <Home />;
+      content = (
+        <Home
+          getPosts={fetchPosts}
+          posts={posts}
+          profil={profil}
+          isAdmin={userAdmin}
+          addPost={addPost}
+        />
+      );
       break;
     case "Members":
       content = (
@@ -66,22 +99,17 @@ export default function Pages({ onConnect }) {
       );
       break;
     default:
-      content = <Home />;
+      content = (
+        <Home
+          getPosts={fetchPosts}
+          posts={posts}
+          profil={profil}
+          isAdmin={userAdmin}
+          addPost={addPost}
+        />
+      );
       break;
   }
-
-  useEffect(
-    // Fetch list members when member page
-    function () {
-      if (page === "Members" || page === "Profil" || page === "Home") {
-        fetchMembers();
-      }
-      if (!profil) {
-        fetchMember(user.userId);
-      }
-    },
-    [page, profil, fetchMembers, fetchMember, user.userId]
-  );
 
   return (
     <div className="main">

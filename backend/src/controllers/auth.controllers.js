@@ -27,7 +27,11 @@ exports.register = async (req, res) => {
       const message = "The user has been created";
       //copy the user object without the password
       user.password = undefined;
-      res.status(201).json({ message, data: user });
+      res.status(201).json({
+        message, // Send a message
+        userId: user._id, // Send the user id
+        token: createToken(user._id), // Create a token
+      });
     })
     .catch((error) => {
       const err = registerErrors(error);

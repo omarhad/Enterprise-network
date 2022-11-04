@@ -8,10 +8,11 @@ exports.getAllPost = (req, res) => {
    **/
   PostModel.find((err, docs) => {
     if (!err) {
-      res.send(docs);
+      const message = "The posts have been found";
+      return res.send({ message, data: docs });
     } else {
       const message = "The posts could not be found. try again later.";
-      res.status(500).json({ message, data: err });
+      return res.status(500).json({ message, data: err });
     }
   }).sort({
     createdAt: -1,
@@ -31,8 +32,10 @@ exports.createPost = async (req, res) => {
 
   const { posterId, message, video } = req.body; // Get the id of the user
   const file = []; // Create an empty array for the pictures
-  if(req.file){
-    file.push({ pic : `${req.protocol}://${req.get("host")}/images/${req.file.filename}` });// Add the picture to the array
+  if (req.file) {
+    file.push({
+      pic: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    }); // Add the picture to the array
   }
   const newPost = new PostModel({
     // Create a new post
@@ -210,45 +213,48 @@ exports.likePost = async (req, res) => {
         const message = "The user could not be found. try again later.";
         return res.status(404).json({ message, data: user });
       }
-      return PostModel.findById(id) // Find the post in the database
-        .then((post) => {
-          if (!post) {
-            // Check if the post exists
-            const message = "The post could not be found. try again later.";
-            return res.status(404).json({ message, data: post });
-          }
-          if (!post.likers.includes(posterId)) {
-            // Check if the user had not liked the post before liking it
-            try {
-              post.updateOne({ $push: { likers: posterId } }); // Add the user to the likes array
-              user.updateOne({ $push: { likes: id } }); // Add the post to the likes array
-              const message = "The post has been liked";
-              res.status(201).json({ message, data: post });
-            } catch (error) {
-              // Error handling
-              const message = "The post could not be liked. try again later.";
-              res.status(500).json({ message, data: error });
+      return (
+        PostModel.findById(id) // Find the post in the database
+          .then((post) => {
+            if (!post) {
+              // Check if the post exists
+              const message = "The post could not be found. try again later.";
+              return res.status(404).json({ message, data: post });
             }
-          }
-          // if the user had liked the post before unliking it
-          else {
-            try {
-              post.updateOne({ $pull: { likers: posterId } }); // Remove the user from the likes array
-              user.updateOne({ $pull: { likes: id } }); // Remove the post from the likes array
-              const message = "The post has been unliked";
-              res.status(201).json({ message, data: post });
-            } catch (error) {
-              // Error handling
-              const message = "The post could not be unliked. try again later.";
-              res.status(500).json({ message, data: error });
+            if (!post.likers.includes(posterId)) {
+              // Check if the user had not liked the post before liking it
+              try {
+                post.updateOne({ $push: { likers: posterId } }); // Add the user to the likes array
+                user.updateOne({ $push: { likes: id } }); // Add the post to the likes array
+                const message = "The post has been liked";
+                res.status(201).json({ message, data: post });
+              } catch (error) {
+                // Error handling
+                const message = "The post could not be liked. try again later.";
+                res.status(500).json({ message, data: error });
+              }
             }
-          }
-        })
-        // Error handling
-        .catch((err) => {
-          const message = "The post could not be liked. try again later.";
-          res.status(500).json({ message, data: err });
-        });
+            // if the user had liked the post before unliking it
+            else {
+              try {
+                post.updateOne({ $pull: { likers: posterId } }); // Remove the user from the likes array
+                user.updateOne({ $pull: { likes: id } }); // Remove the post from the likes array
+                const message = "The post has been unliked";
+                res.status(201).json({ message, data: post });
+              } catch (error) {
+                // Error handling
+                const message =
+                  "The post could not be unliked. try again later.";
+                res.status(500).json({ message, data: error });
+              }
+            }
+          })
+          // Error handling
+          .catch((err) => {
+            const message = "The post could not be liked. try again later.";
+            res.status(500).json({ message, data: err });
+          })
+      );
     })
     // Error handling
     .catch((err) => {

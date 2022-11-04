@@ -46,7 +46,7 @@ function reducer(state, action) {
         message: action.payload.message,
         profil: action.payload.data,
         members: state.members.map((m) =>
-          m._id === action.target._id ? action.payload.data : m
+          m._id === action.payload.data._id ? action.payload.data : m
         ),
       };
     case "UPDATE_PICTURE":
@@ -55,7 +55,7 @@ function reducer(state, action) {
         message: action.payload.message,
         profil: action.payload.data,
         members: state.members.map((m) =>
-          m._id === action.target._id ? action.payload.data : m
+          m._id === action.payload.data._id ? action.payload.data : m
         ),
       };
 
@@ -113,15 +113,16 @@ export function useMembers() {
         console.error(err);
       }
     },
-    editMembers: async function (member, data) {
-      const response = await apiFetch("/api/user/" + member._id, {
-        method: "POST",
+    editMembers: async function (id, data) {
+      console.log("editMembers", id, data);
+      const response = await apiFetch("/api/user/" + id, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      dispatch({ type: "UPDATE_MEMBER", payload: response, target: member });
+      dispatch({ type: "UPDATE_MEMBER", payload: response, target: data });
     },
     uploadPicture: async function (data) {
       const response = await apiFetch("/api/user/upload/", {

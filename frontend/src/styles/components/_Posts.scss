@@ -1,0 +1,123 @@
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+    overflow: auto;
+    align-items: center;
+
+    &__separator {
+        width: 100%;
+        margin: 2rem 0;
+        height: 1.5px;
+        border: 1.5px solid white;
+        box-sizing: border-box;
+    }
+
+    &__card {
+        width: 100%;
+        min-height: auto;
+        box-sizing: border-box;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: .3rem;
+
+            &__user {
+                display: flex;
+                align-items: center;
+                color: $tertiaire;
+
+                img {
+                    width: 3rem;
+                    height: 3rem;
+                    border-radius: 50%;
+                    margin-right: .5rem;
+                }
+
+                h3 {
+                    font-size: 1.1rem;
+                    height: 1.5rem;
+                    letter-spacing: .1rem;
+                    font-weight: 600;
+                    color: $tertiaire;
+                    overflow: hidden;
+                }
+            }
+
+            &__date {
+                display: flex;
+                align-items: center;
+                font-size: .8rem;
+                color: $tertiaire;
+            }
+        }
+
+        &__body {
+            min-height: 5rem;
+            border-bottom: 1px solid $secondaire;
+            box-shadow: $shadowPrimaire;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-sizing: border-box;
+
+            &__pic {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                height: 100%;
+
+                &--single {
+                    width: 100%;
+                    object-fit: cover;
+                    padding-top: .5rem;
+                }
+
+                &--multiple {
+                    width: 50%;
+                    object-fit: cover;
+                }
+
+            }
+
+            &__video {
+
+                width: 100%;
+
+                iframe {
+                    width: 100%;
+                    min-height: 20rem;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            align-items: center;
+            padding: .2rem;
+
+            &__like {
+                display: flex;
+                align-items: center;
+                color: $tertiaire;
+
+                .fa {
+                    margin: 0 .3rem;
+                }
+            }
+
+            &__comments {
+                display: flex;
+                align-items: center;
+                color: $tertiaire;
+
+                .fa {
+                    margin: 0 .3rem;
+                }
+            }
+        }
+    }
+}

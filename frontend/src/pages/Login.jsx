@@ -7,7 +7,7 @@ import { LoginPage } from "../components/login/LoginPage";
 /**
  * Display Login or Register form
  * @param {Function} onConnect // State to verify if the user is logged in
- * @returns
+ * @returns div => login or register form | display login or register form
  */
 export default function Login({ onConnect }) {
   const [page, setPage] = useState("loginPage"); // Store the current page
