@@ -14,7 +14,6 @@ import { AllMembers } from "../components/members/ListMembers";
 export default function Members({ members, onDelete, isAdmin, onEdit }) {
   return (
     <>
-      <h1>List Members</h1>
       {members === null ? (
         <Loader />
       ) : (

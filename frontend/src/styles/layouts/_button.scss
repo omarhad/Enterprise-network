@@ -17,13 +17,25 @@
     padding-left: 1rem;
     padding-right: 1rem;
 
-    &--delete {
+    &--delete,
+    &--edit,
+    &--image,
+    &--video {
         width: 2rem;
 
         svg {
             transform: scale(0.8);
         }
     }
+
+    &--comment,
+    &--newPost {
+        height: 2rem;
+        font-size: 1rem;
+    }
+
+
+
 
     &:hover {
         background: $tertiaire;

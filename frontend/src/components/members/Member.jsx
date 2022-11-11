@@ -14,6 +14,8 @@ import { SvgDelete } from "../../utils/icons/SvgDelete";
 export function Member({ member, onDelete, isAdmin }) {
   const [show, setShow] = useState(false); // Store the state of the button to show more information
 
+  const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
+
   const handleShow = () => {
     // Change the state of the button to show more information
     setShow(!show);
@@ -37,7 +39,7 @@ export function Member({ member, onDelete, isAdmin }) {
         <h3>
           {upperCase(member.firstName)} {upperCase(member.lastName)}
         </h3>
-        <p>Post : {member.job}</p>
+        <p>Position : {member.job}</p>
         {!show && <span onClick={handleShow}>Click to show more</span>}
         {/* info hidden */}
         {show && (
@@ -52,7 +54,7 @@ export function Member({ member, onDelete, isAdmin }) {
       </div>
       {
         /* delete button */
-        isAdmin && (
+        isAdmin && member._id !== user.userId && (
           <>
             <Button
               className="button--delete"
@@ -70,7 +72,7 @@ export function Member({ member, onDelete, isAdmin }) {
 }
 
 Member.propTypes = {
-  members: PropTypes.array,
+  member: PropTypes.object.isRequired,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
 };

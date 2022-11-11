@@ -45,10 +45,13 @@ export const isEmpty = (value) => {
  */
 export const dateParser = (num) => {
   let options = {
-    month: "long",
-    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    second: "2-digit",
+    weekend: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   };
 
   let timestamp = Date.parse(num);

@@ -12,7 +12,15 @@ import { birthdayParser } from "../../utils/Tools";
  * @param {Object} name // Name of the input
  * @returns form => Component UploadLastName with all information about the user
  */
-export default function UploadProfil({ profil, onEdit, name, type, message }) {
+export default function UploadProfil({
+  profil,
+  onEdit,
+  name,
+  type,
+  message,
+  className = "",
+  textarea,
+}) {
   let inputName = "";
   if (name.split(" ")[1]) {
     inputName = name.split(" ")[0].toLowerCase() + name.split(" ")[1];
@@ -111,12 +119,13 @@ export default function UploadProfil({ profil, onEdit, name, type, message }) {
                 <span>{name} :</span>
                 <Field
                   name={inputName}
-                  className="input"
+                  className={`input ${className}`}
                   defaultValue={profil && profil[inputName]}
                   onChange={(e) => setData(e.target.value)}
                   refField={refOne}
                   error={error}
                   type={type}
+                  textarea={textarea}
                 />
               </div>
             </>

@@ -70,6 +70,11 @@
             align-items: center;
             color: $tertiaire;
             gap: .5rem;
+            height: 3rem;
+
+            .arrow-down {
+                transform: rotate(180deg);
+            }
         }
     }
 
@@ -93,6 +98,7 @@
             align-items: center;
             color: $tertiaire;
             gap: .5rem;
+            height: 3rem;
         }
 
         h1 {

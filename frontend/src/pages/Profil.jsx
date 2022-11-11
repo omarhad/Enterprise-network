@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import UploadProfil from "../components/profil/UploadProfil";
 import { UploadPicture } from "../components/profil/UploadPicture";
+import { SvgArrowUp } from "../utils/icons/SvgArrowUp";
 
 /**
  * Component Profil
@@ -18,17 +19,13 @@ export default function Profil({ profil, onEdit, uploadPicture }) {
         <img className="profilImg" src={profil.image} alt="user-pic" />
         <UploadPicture uploadPicture={uploadPicture} profil={profil} />
         <div className="profilContent__img__arrow">
-          <img
-            className="arrow"
-            src="./img/icons/arrow-down-solid.svg"
-            alt=""
-          />
+          <SvgArrowUp className="arrow-down" />
           <p>Scroll down for more</p>
         </div>
       </div>
       <div className="profilContent__info">
         <div className="profilContent__info__arrow">
-          <img className="arrow" src="./img/icons/arrow-up-solid.svg" alt="" />
+          <SvgArrowUp className="arrow-up" />
           <p>Scroll up to go back</p>
         </div>
         <h1>Profile information</h1>
@@ -67,6 +64,8 @@ export default function Profil({ profil, onEdit, uploadPicture }) {
             name="Bio"
             type="text"
             message="Your bio has been updated"
+            className="uploadInfo__input-bio"
+            textarea="true"
           />
           <UploadProfil
             profil={profil}
@@ -74,6 +73,13 @@ export default function Profil({ profil, onEdit, uploadPicture }) {
             name="Birthday"
             type="date"
             message="Your birthday has been updated"
+          />
+          <UploadProfil
+            profil={profil}
+            onEdit={onEdit}
+            name="Position"
+            type="text"
+            message="Your position has been updated"
           />
         </div>
       </div>

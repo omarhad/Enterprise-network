@@ -12,7 +12,7 @@ import Profil from "./Profil";
  * @returns {JSX.Element} The pages to display
  */
 export default function Pages({ onConnect }) {
-  const [page, setPage] = useState("home"); // Store the current page
+  const [page, setPage] = useState("Home"); // Store the current page
 
   const {
     members, // Response from API with all members
@@ -29,6 +29,12 @@ export default function Pages({ onConnect }) {
     posts,
     fetchPosts,
     addPost,
+    deletePost,
+    uploadPicPost,
+    likePost,
+    updatePost,
+    addComment,
+    commentDelete,
   } = usePosts(); // Function to fetch all posts
 
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
@@ -41,9 +47,6 @@ export default function Pages({ onConnect }) {
       }
       if (page === "Profil" || !profil) {
         fetchMember(user.userId);
-      }
-      if (page === "Home" && !posts) {
-        fetchPosts(user.userId);
       }
     },
     [page, members, profil, user, posts, fetchMembers, fetchMember, fetchPosts]
@@ -71,11 +74,17 @@ export default function Pages({ onConnect }) {
     case "Home":
       content = (
         <Home
-          getPosts={fetchPosts}
           posts={posts}
           profil={profil}
           isAdmin={userAdmin}
           addPost={addPost}
+          onDelete={deletePost}
+          onUpload={uploadPicPost}
+          onLike={likePost}
+          getPost={fetchPosts}
+          onUpdate={updatePost}
+          addComment={addComment}
+          commentDelete={commentDelete}
         />
       );
       break;
@@ -101,11 +110,17 @@ export default function Pages({ onConnect }) {
     default:
       content = (
         <Home
-          getPosts={fetchPosts}
           posts={posts}
           profil={profil}
           isAdmin={userAdmin}
           addPost={addPost}
+          onDelete={deletePost}
+          onUpload={uploadPicPost}
+          onLike={likePost}
+          getPost={fetchPosts}
+          onUpdate={updatePost}
+          addComment={addComment}
+          commentDelete={commentDelete}
         />
       );
       break;

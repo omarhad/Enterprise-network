@@ -14,7 +14,17 @@ export function Field({
     <>
       {children && <label htmlFor={name}>{children}</label>}
 
-      <input type={type} name={name} id={name} ref={refField} {...props} />
+      {props.textarea ? (
+        <textarea
+          type={type}
+          name={name}
+          id={name}
+          ref={refField}
+          {...props}
+        ></textarea>
+      ) : (
+        <input type={type} name={name} id={name} ref={refField} {...props} />
+      )}
 
       {error && <p className="">{error[errType]}</p>}
     </>

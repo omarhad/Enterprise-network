@@ -7,6 +7,10 @@
     align-items: center;
     justify-content: space-around;
 
+    &__input-bio {
+        overflow: hidden;
+    }
+
     &__name {
         position: relative;
         width: 275px;
@@ -32,6 +36,7 @@
             outline: none;
             color: $tertiaire;
             font-size: 1em;
+            overflow: hidden;
         }
 
         .input {

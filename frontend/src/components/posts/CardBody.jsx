@@ -1,5 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 
+/**
+ * Function to display a post body
+ * @param {Object} post - The post to display
+ * @returns div => A post body
+ */
 export default function CardBody({ post }) {
   const picture = post.picture;
   let picClassName = "";
@@ -34,3 +40,7 @@ export default function CardBody({ post }) {
     </div>
   );
 }
+
+CardBody.propTypes = {
+  post: PropTypes.object.isRequired,
+};

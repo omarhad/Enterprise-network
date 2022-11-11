@@ -48,6 +48,7 @@ function reducer(state, action) {
         members: state.members.map((m) =>
           m._id === action.payload.data._id ? action.payload.data : m
         ),
+        loading: false,
       };
     case "UPDATE_PICTURE":
       return {
@@ -57,6 +58,7 @@ function reducer(state, action) {
         members: state.members.map((m) =>
           m._id === action.payload.data._id ? action.payload.data : m
         ),
+        loading: false,
       };
 
     default:
@@ -72,15 +74,10 @@ export function useMembers() {
   });
 
   return {
-    log: console.log("Log useMembers : ", {
-      state,
-      members: state.members,
-      profil: state.profil,
-      loading: state.loading,
-      message: state.message,
-    }),
     members: state.members, // array of members
     profil: state.profil, // single member
+    loading: state.loading, // boolean
+    message: state.message, // message from server
     fetchMembers: async function () {
       try {
         if (state.loading || state.members) return; // Don't fetch if already loading or if already fetched
@@ -114,7 +111,6 @@ export function useMembers() {
       }
     },
     editMembers: async function (id, data) {
-      console.log("editMembers", id, data);
       const response = await apiFetch("/api/user/" + id, {
         method: "PUT",
         headers: {

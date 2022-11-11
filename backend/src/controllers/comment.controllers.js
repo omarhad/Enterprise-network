@@ -19,7 +19,7 @@ exports.commentPost = async (req, res) => {
     const message = `The id : ${postId} | is not valid`;
     return res.status(400).json({ message, data: commenterId });
   }
-
+  console.log(postId);
   const user = await UserModel.findById(commenterId); // Find the user
   await PostModel.findById(postId) // Find the post
     .then((post) => {
@@ -107,7 +107,7 @@ exports.deleteCommentPost = async (req, res) => {
    */
 
   const postId = req.params.id; // Get the id of the post
-  const { commenterId, commentId } = req.body; // Get the id of the post
+  const { commenterId, commentId, isAdmin } = req.body; // Get the id of the post
 
   // Check if the id is valid
   if (!ObjectId.isValid(postId)) {
@@ -128,7 +128,7 @@ exports.deleteCommentPost = async (req, res) => {
         const message = `Comment not found`;
         return res.status(400).json({ message, data: commentId });
       }
-      if (comment.commenterId != commenterId) {
+      if (comment.commenterId != commenterId && !isAdmin) {
         // Check if the user is the owner of the comment
         const message = `You are not the owner of the comment`;
         return res.status(400).json({ message, data: commenterId });

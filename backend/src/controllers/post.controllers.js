@@ -2,6 +2,8 @@ const PostModel = require("../models/model.posts");
 const UserModel = require("../models/model.users");
 const ObjectId = require("mongoose").Types.ObjectId;
 
+const { picErrors } = require("../utils/errors.utils");
+
 exports.getAllPost = (req, res) => {
   /** get all posts
    * @return { Promise } posts
@@ -32,6 +34,7 @@ exports.createPost = async (req, res) => {
 
   const { posterId, message, video } = req.body; // Get the id of the user
   const file = []; // Create an empty array for the pictures
+
   if (req.file) {
     file.push({
       pic: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
@@ -98,6 +101,7 @@ exports.updatePost = async (req, res) => {
 
   const { id } = req.params; // Get the id of the post
   const { posterId, message, video } = req.body; // Get the id of the user
+  console.log(req.body);
 
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {
@@ -116,7 +120,7 @@ exports.updatePost = async (req, res) => {
         message: message,
         video: video,
       };
-
+      console.log(post.posterId);
       if (posterId != post.posterId) {
         // Check if the user is the owner of the post
         const message = "You are not allowed to update this post.";
@@ -149,11 +153,12 @@ exports.deletePost = async (req, res) => {
    * delete a post
    * @param { String } id       | id of the post : required
    * @param { String } posterId | id of the user : required
+   * @param {Boolean} isAdmin  | if the user is an admin
    * @return { Promise } post
    */
 
   const { id } = req.params; // Get the id of the post
-  const { posterId } = req.body; // Get the id of the user
+  const { posterId, isAdmin } = req.body; // Get the id of the user
 
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {
@@ -167,16 +172,16 @@ exports.deletePost = async (req, res) => {
         const message = "The post could not be found. try again later.";
         return res.status(404).json({ message, data: post });
       }
-      if (posterId != post.posterId) {
+      if (posterId != post.posterId && !isAdmin) {
         // Check if the user is the owner of the post
         const message = "You are not allowed to delete this post.";
         return res.status(403).json({ message, data: post });
       }
-      return post.findByIdAndRemove(id, (err, docs) => {
+      post.deleteOne((err, data) => {
         // Delete the post
         if (!err) {
           const message = "The post has been deleted";
-          return res.send({ message, docs });
+          res.send({ message, data });
         }
       });
     })
@@ -206,59 +211,53 @@ exports.likePost = async (req, res) => {
     return res.status(400).send({ message });
   }
 
-  await UserModel.findById(likerId) // Find the user in the database
-    .then((user) => {
-      if (!user) {
-        // Check if the user exists
-        const message = "The user could not be found. try again later.";
-        return res.status(404).json({ message, data: user });
+  await PostModel.findById(id)
+    .then((post) => {
+      if (!post) {
+        // Check if the post exists
+        const message = "The post could not be found. try again later.";
+        return res.status(404).json({ message, data: post });
       }
-      return (
-        PostModel.findById(id) // Find the post in the database
-          .then((post) => {
-            if (!post) {
-              // Check if the post exists
-              const message = "The post could not be found. try again later.";
-              return res.status(404).json({ message, data: post });
+      if (post.likers.includes(likerId)) {
+        // Check if the user already liked the post
+        PostModel.findByIdAndUpdate(
+          id,
+          { $pull: { likers: likerId } },
+          { new: true },
+          (err, docs) => {
+            if (!err) {
+              const message = "The post has been unliked";
+              return res.status(200).json({ message, data: docs });
             }
-            if (!post.likers.includes(posterId)) {
-              // Check if the user had not liked the post before liking it
-              try {
-                post.updateOne({ $push: { likers: posterId } }); // Add the user to the likes array
-                user.updateOne({ $push: { likes: id } }); // Add the post to the likes array
-                const message = "The post has been liked";
-                res.status(201).json({ message, data: post });
-              } catch (error) {
-                // Error handling
-                const message = "The post could not be liked. try again later.";
-                res.status(500).json({ message, data: error });
-              }
+          }
+        );
+        UserModel.findByIdAndUpdate(
+          likerId,
+          { $pull: { likes: id } },
+          { new: true }
+        );
+      } else {
+        PostModel.findByIdAndUpdate(
+          id,
+          { $push: { likers: likerId } },
+          { new: true },
+          (err, docs) => {
+            if (!err) {
+              const message = "The post has been liked";
+              return res.status(200).json({ message, data: docs });
             }
-            // if the user had liked the post before unliking it
-            else {
-              try {
-                post.updateOne({ $pull: { likers: posterId } }); // Remove the user from the likes array
-                user.updateOne({ $pull: { likes: id } }); // Remove the post from the likes array
-                const message = "The post has been unliked";
-                res.status(201).json({ message, data: post });
-              } catch (error) {
-                // Error handling
-                const message =
-                  "The post could not be unliked. try again later.";
-                res.status(500).json({ message, data: error });
-              }
-            }
-          })
-          // Error handling
-          .catch((err) => {
-            const message = "The post could not be liked. try again later.";
-            res.status(500).json({ message, data: err });
-          })
-      );
+          }
+        );
+        UserModel.findByIdAndUpdate(
+          likerId,
+          { $push: { likes: id } },
+          { new: true }
+        );
+      }
     })
     // Error handling
     .catch((err) => {
-      const message = "The user could not be found. try again later.";
-      res.status(500).json({ message, data: err });
+      const message = "The post could not be liked. try again later.";
+      return res.status(500).json({ message, data: err });
     });
 };

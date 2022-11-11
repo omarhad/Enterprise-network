@@ -46,6 +46,7 @@ AllMembers.propTypes = {
 function ListMembers({ members, onDelete, isAdmin, onEdit }) {
   return (
     <ul className="listMembers">
+      <h1>List Members</h1>
       {members.map((member) => (
         <Member
           key={member._id}

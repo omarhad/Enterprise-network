@@ -3,7 +3,7 @@ const favicon = require("serve-favicon"); // Serve-favicon : favicon
 const mongoose = require("mongoose"); // MongoDB : gestionnaire de base de données
 const cors = require("cors"); // Cors : gestionnaire de requêtes HTTP
 const dotenv = require("dotenv"); // Dotenv : gestionnaire de variables d'environnement
-
+const path = require("path");
 
 const bodyParser = require("body-parser"); // Body-parser : parser
 const userRoutes = require("./src/routes/user.routes"); // Importation des routes
@@ -12,7 +12,6 @@ const postRoutes = require("./src/routes/post.routes"); // Importation des route
 dotenv.config({
   path: "./config/.env",
 }); // Load the .env file
-
 
 // Connect to MongoDB
 mongoose
@@ -28,6 +27,7 @@ const app = express(); // Create an instance of express
 // Middleware
 app
   .use(favicon(__dirname + "/log.ico")) // Favicon
+  .use("/images", express.static(path.join(__dirname, "images")))
   .use(bodyParser.json()) // Body-parser
   .use(cors()); // Cors
 
@@ -36,7 +36,7 @@ app.use("/api/user", userRoutes); // Use the users routes
 app.use("/api/post", postRoutes); // Use the posts routes")
 
 // Error handling
-app.use(({res}) => {
+app.use(({ res }) => {
   const message = "The requested resource could not be found.";
   res.status(404).json({ message });
 });

@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
       format: "%d/%m/%Y",
       date: "$timestamp",
     },
-    job: {
+    position: {
       type: String,
       minlength: 2,
       maxlength: 50,
