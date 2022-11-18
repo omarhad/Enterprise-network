@@ -36,5 +36,5 @@ export function LoginPage({ onChoice }) {
 
 // declare the prop types
 LoginPage.propTypes = {
-  onConnect: PropTypes.func.isRequired,
+  onChoice: PropTypes.func.isRequired,
 };

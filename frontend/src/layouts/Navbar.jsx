@@ -42,11 +42,16 @@ export default function Navbar({ profil, onPage, onLogout }) {
       </div>
       <ul className="navBar">
         {navBar.map((navBar) => (
-          <div key={navBar.id} onClick={handelShowLinks}>
-            <NavItem title={navBar.title} num={navBar.id} onPage={onPage}>
+          <>
+            <NavItem
+              title={navBar.title}
+              num={navBar.id}
+              onPage={onPage}
+              onClick={handelShowLinks}
+            >
               <h5>{navBar.children}</h5>
             </NavItem>
-          </div>
+          </>
         ))}
         <li key="4" className="navItem slideInDown-4" onClick={onLogout}>
           <div className="navItem__link">

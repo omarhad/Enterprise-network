@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { apiFetch, ApiErrors } from "../../utils/Api";
 import { verificationEmail, verificationPassword } from "../../utils/Regex";
-import { Alert } from "../../utils/Alert";
 import Button from "../../layouts/Button";
 import { Field } from "../../layouts/Field";
+import Modal from "../../layouts/Modal";
+import { useEffect } from "react";
 
 /**
  * Function to login user
@@ -14,8 +15,19 @@ import { Field } from "../../layouts/Field";
  */
 export function LoginForm({ onConnect, onChoice }) {
   const [error, setError] = useState(null); // state variable to store error message
+  console.log("🚀 ~ file: LoginForm.jsx ~ line 17 ~ LoginForm ~ error", error);
   const [loading, setLoading] = useState(false); // state variable to store loading state
 
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+    return () => {
+      clearTimeout();
+    };
+  }, [error]);
   // function to handle login
   const handleSubmit = async function (e) {
     e.preventDefault(); // prevent page reload
@@ -52,35 +64,39 @@ export function LoginForm({ onConnect, onChoice }) {
   };
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <Button
-        id="loginPage"
-        className="button back login-form__btn"
-        onClick={onChoice}
-      >
-        Back
-      </Button>
-      <div className="alert">
-        {error && <Alert>{error.login || error}</Alert>}
-      </div>
-
-      <div className="login-form__group">
-        <div className="login-form__group__content">
-          <Field name="email" type="email" placeholder="Email" required />
-        </div>
-        <div className="login-form__group__content">
-          <Field
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </div>
-        <Button loading={loading} type="submit" className="button">
-          Login
+    <>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <Button
+          id="loginPage"
+          className="button back login-form__btn"
+          onClick={onChoice}
+        >
+          Back
         </Button>
-      </div>
-    </form>
+
+        <div className="login-form__group">
+          <div className="login-form__group__content">
+            <Field name="email" type="email" placeholder="Email" required />
+          </div>
+          <div className="login-form__group__content">
+            <Field
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <Button loading={loading} className="button">
+            Login
+          </Button>
+        </div>
+      </form>
+      {error && (
+        <Modal>
+          <p className="error">{error.login || error}</p>
+        </Modal>
+      )}
+    </>
   );
 }
 

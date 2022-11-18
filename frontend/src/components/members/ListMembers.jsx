@@ -8,10 +8,15 @@ import { Loader } from "../../layouts/Loader";
  * @param {Array} members // Array of members
  * @param {Function} onDelete // Function to delete a member
  * @param {Boolean} isAdmin // Boolean to know if user is admin
- * @param {Function} onEdit // Function to edit a member
  * @returns ul => list of members
  */
-export function AllMembers({ members, onDelete, isAdmin, onEdit }) {
+export function AllMembers({
+  members,
+  onDelete,
+  isAdmin,
+  posts,
+  onDeletePost,
+}) {
   return (
     <>
       {members === null ? (
@@ -21,7 +26,8 @@ export function AllMembers({ members, onDelete, isAdmin, onEdit }) {
           members={members}
           onDelete={onDelete}
           isAdmin={isAdmin}
-          onEdit={onEdit}
+          posts={posts}
+          onDeletePost={onDeletePost}
         />
       )}
     </>
@@ -40,10 +46,9 @@ AllMembers.propTypes = {
  * @param {Array} members // Array of members
  * @param {Function} onDelete // Function to delete a member
  * @param {Boolean} isAdmin // Boolean to know if user is admin
- * @param {Function} onEdit // Function to edit a member
  * @returns ul => list of members
  */
-function ListMembers({ members, onDelete, isAdmin, onEdit }) {
+function ListMembers({ members, onDelete, isAdmin, posts, onDeletePost }) {
   return (
     <ul className="listMembers">
       <h1>List Members</h1>
@@ -53,7 +58,8 @@ function ListMembers({ members, onDelete, isAdmin, onEdit }) {
           member={member}
           onDelete={onDelete}
           isAdmin={isAdmin}
-          onEdit={onEdit}
+          posts={posts}
+          onDeletePost={onDeletePost}
         />
       ))}
     </ul>
@@ -64,5 +70,4 @@ ListMembers.propTypes = {
   members: PropTypes.array,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
-  onEdit: PropTypes.func,
 };

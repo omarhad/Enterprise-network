@@ -145,7 +145,8 @@ export default function NewPost({ profil, addPost }) {
         <NewPostAction
           setShowForm={
             showForm === false
-              ? () => {
+              ? (e) => {
+                  e.preventDefault();
                   setShowForm(true);
                   window.scroll(0, 0);
                 }
@@ -167,6 +168,6 @@ export default function NewPost({ profil, addPost }) {
 }
 
 NewPost.propTypes = {
-  profil: PropTypes.object.isRequired,
+  profil: PropTypes.object,
   addPost: PropTypes.func,
 };

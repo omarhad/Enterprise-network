@@ -11,7 +11,14 @@ import { AllMembers } from "../components/members/ListMembers";
  * @param {Function} onEdit // Function to edit a member
  * @returns div => Component Members with all members
  */
-export default function Members({ members, onDelete, isAdmin, onEdit }) {
+export default function Members({
+  members,
+  onDelete,
+  isAdmin,
+  onEdit,
+  posts,
+  onDeletePost,
+}) {
   return (
     <>
       {members === null ? (
@@ -22,6 +29,8 @@ export default function Members({ members, onDelete, isAdmin, onEdit }) {
           onDelete={onDelete}
           isAdmin={isAdmin}
           onEdit={onEdit}
+          posts={posts}
+          onDeletePost={onDeletePost}
         />
       )}
     </>

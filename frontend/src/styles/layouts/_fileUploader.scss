@@ -3,7 +3,7 @@
     height: 2rem;
 
     &__file {
-        transform: translate(-62px, 7px);
+        transform: translate(-40px, 7px);
         opacity: 0;
         cursor: pointer;
         position: absolute;
@@ -14,4 +14,10 @@
 .file-uploader {
     display: flex;
     flex-direction: column;
+}
+
+.uploaderPost {
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, 0);
 }

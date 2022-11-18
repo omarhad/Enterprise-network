@@ -1,8 +1,8 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import Button from "../../layouts/Button";
-import { isEmpty } from "../../utils/Tools";
 import { FileUploaderPost } from "../../utils/FileUploaderPost";
+import { isEmpty } from "../../utils/Tools";
 
 /**
  * Function to display a action button of the new post
@@ -31,13 +31,25 @@ export function NewPostAction({
 }) {
   return (
     <div className="newPost--form__actions" onClick={setShowForm}>
-      <Button
-        className="button button--newPost"
-        onClick={handleSubmit}
-        loading={loading}
-      >
-        {showForm ? "Submit" : "New Post "}
-      </Button>
+      {showForm ? (
+        <Button
+          className="button button--newPost"
+          type="submit"
+          onClick={handleSubmit}
+          loading={loading}
+        >
+          Submit
+        </Button>
+      ) : (
+        <Button
+          className="button button--newPost"
+          onClick={(e) => setShowForm(e)}
+          loading={loading}
+          type="button"
+        >
+          New Post
+        </Button>
+      )}
       {message || postPicture || video.length > 20 ? (
         <Button
           type="submit"

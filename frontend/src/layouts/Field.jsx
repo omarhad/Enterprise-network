@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Modal from "./Modal";
 
 export function Field({
   name,
@@ -26,7 +27,7 @@ export function Field({
         <input type={type} name={name} id={name} ref={refField} {...props} />
       )}
 
-      {error && <p className="">{error[errType]}</p>}
+      {error && <Modal>{error[errType]}</Modal>}
     </>
   );
 }

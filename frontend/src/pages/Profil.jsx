@@ -1,7 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
-import UploadProfil from "../components/profil/UploadProfil";
+import React from "react";
 import { UploadPicture } from "../components/profil/UploadPicture";
+import UploadProfil from "../components/profil/UploadProfil";
 import { SvgArrowUp } from "../utils/icons/SvgArrowUp";
 
 /**
@@ -13,11 +13,16 @@ import { SvgArrowUp } from "../utils/icons/SvgArrowUp";
  * @returns div => Component Profil with all information about the user
  */
 export default function Profil({ profil, onEdit, uploadPicture }) {
+  const [previewPic, setPreviewPic] = React.useState(profil.image);
   return (
     <div className="profilContent">
       <div className="profilContent__img">
-        <img className="profilImg" src={profil.image} alt="user-pic" />
-        <UploadPicture uploadPicture={uploadPicture} profil={profil} />
+        <img className="profilImg" src={previewPic} alt="user-pic" />
+        <UploadPicture
+          uploadPicture={uploadPicture}
+          profil={profil}
+          previewPic={(url) => setPreviewPic(url)}
+        />
         <div className="profilContent__img__arrow">
           <SvgArrowUp className="arrow-down" />
           <p>Scroll down for more</p>

@@ -33,3 +33,18 @@
     }
 
 }
+
+@media screen and (min-width: 1024px) {
+    .Login__content {
+        display: flex;
+
+        .loginPage {
+            width: 60%;
+            padding: 1rem 0;
+        }
+
+        .login-form {
+            width: 40%;
+        }
+    }
+}

@@ -101,7 +101,6 @@ exports.updatePost = async (req, res) => {
 
   const { id } = req.params; // Get the id of the post
   const { posterId, message, video } = req.body; // Get the id of the user
-  console.log(req.body);
 
   // Check if the id is valid
   if (!ObjectId.isValid(id)) {
@@ -120,24 +119,27 @@ exports.updatePost = async (req, res) => {
         message: message,
         video: video,
       };
-      console.log(post.posterId);
-      if (posterId != post.posterId) {
+      if (posterId !== post.posterId) {
         // Check if the user is the owner of the post
         const message = "You are not allowed to update this post.";
         return res.status(403).json({ message, data: post });
       }
-      return post.findByIdAndUpdate(
-        id,
-        updatePost,
-        { new: true },
-        (err, docs) => {
-          // Update the post
-          if (!err) {
-            const message = "The post has been updated";
-            res.send({ message, docs });
+      post
+        .updateOne(updatePost) // Update the post
+        .then(
+          () => {
+            PostModel.findById(post._id) // Find the new post
+              .then((post) => {
+                const message = "The post has been updated";
+                return res.status(200).json({ message, data: post });
+              });
           }
-        }
-      );
+          // Error handling
+        )
+        .catch((err) => {
+          const message = "The post could not be updated. try again later.";
+          return res.status(500).json({ message, data: err });
+        });
     })
     // Error handling
     .catch((err) => {

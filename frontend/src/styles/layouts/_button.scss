@@ -1,7 +1,7 @@
 .button {
     background: $primaire;
     box-shadow: $shadowPrimaire;
-    height: 50px;
+    height: 3rem;
     min-width: 130px;
     border-radius: 5px;
     font-style: normal;
@@ -17,15 +17,32 @@
     padding-left: 1rem;
     padding-right: 1rem;
 
+    &__addPic {
+        position: relative;
+    }
+
     &--delete,
     &--edit,
     &--image,
+    &--comment,
     &--video {
         width: 2rem;
 
         svg {
             transform: scale(0.8);
         }
+
+        &__picture {
+            position: absolute;
+            top: 2rem;
+            left: 1.5rem;
+            background: #ffffff4a;
+            border-radius: 0.5rem;
+        }
+    }
+
+    &--plus {
+        width: 4rem;
     }
 
     &--comment,

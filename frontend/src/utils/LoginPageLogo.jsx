@@ -7,6 +7,7 @@ export default function LoginPageLogo() {
       version="1.1"
       viewBox="0 0 1698.096 1678.965"
       xmlns="http://www.w3.org/2000/svg"
+      className="svglogo"
     >
       <g fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth="2.7598">
         <line x1="849.05" x2="854.24" y1="103.5" y2="105.39" />

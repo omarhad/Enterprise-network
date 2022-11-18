@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SvgLike from "../../utils/icons/SvgLike";
+import { SvgComment } from "../../utils/icons/SvgComment";
 
 /**
  * Function to display a post footer
@@ -26,6 +27,7 @@ export default function CardFooter({ post, profil, onLike, onComment }) {
   return (
     <div className="posts__card__footer">
       <div className="posts__card__footer__comments" onClick={onComment}>
+        <SvgComment />
         <span>{post.comments.length}</span>
       </div>
       <div className="posts__card__footer__like">

@@ -11,7 +11,8 @@ import { SvgDelete } from "../../utils/icons/SvgDelete";
  * @param {Boolean} isAdmin // Boolean to know if user is admin
  * @returns li => member information
  */
-export function Member({ member, onDelete, isAdmin }) {
+export function Member({ member, onDelete, isAdmin, posts, onDeletePost }) {
+  console.log("🚀 ~ file: Member.jsx ~ line 15 ~ Member ~ posts", posts);
   const [show, setShow] = useState(false); // Store the state of the button to show more information
 
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
@@ -27,7 +28,14 @@ export function Member({ member, onDelete, isAdmin }) {
     // Delete a member
     e.preventDefault();
     setLoading(true);
-    await onDelete(member);
+    if (window.confirm("Voulez-vous vraiment supprimer ce membre ?")) {
+      posts.map((post) => {
+        if (post.posterId === member._id) {
+          onDeletePost(post._id, isAdmin, member._id);
+        }
+      });
+      await onDelete(member);
+    }
   };
 
   return (
@@ -62,7 +70,7 @@ export function Member({ member, onDelete, isAdmin }) {
               onClick={handleDelete}
               loading={loading}
             >
-              <SvgDelete />
+              <SvgDelete className={"button--delete"} />
             </Button>
           </>
         )

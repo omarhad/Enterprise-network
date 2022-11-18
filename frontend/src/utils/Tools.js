@@ -60,3 +60,27 @@ export const dateParser = (num) => {
 
   return date.toString();
 };
+
+export const timestampParser = (timestamp) => {
+  var date = new Date(timestamp);
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+
+  return (
+    (day < 10 ? "0" + day : day) +
+    "/" +
+    (month < 10 ? "0" + month : month) +
+    "/" +
+    year +
+    " " +
+    (hour < 10 ? "0" + hour : hour) +
+    ":" +
+    (minute < 10 ? "0" + minute : minute) +
+    ":" +
+    (second < 10 ? "0" + second : second)
+  );
+};

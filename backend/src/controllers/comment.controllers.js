@@ -19,7 +19,6 @@ exports.commentPost = async (req, res) => {
     const message = `The id : ${postId} | is not valid`;
     return res.status(400).json({ message, data: commenterId });
   }
-  console.log(postId);
   const user = await UserModel.findById(commenterId); // Find the user
   await PostModel.findById(postId) // Find the post
     .then((post) => {

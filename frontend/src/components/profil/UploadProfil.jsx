@@ -4,6 +4,7 @@ import { Field } from "../../layouts/Field";
 import { ApiErrors } from "../../utils/Api";
 import Button from "../../layouts/Button";
 import { birthdayParser } from "../../utils/Tools";
+import Modal from "../../layouts/Modal";
 
 /**
  * Component UploadLastName
@@ -93,7 +94,11 @@ export default function UploadProfil({
   };
   return (
     <>
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <Modal>
+          <p className="error">{error}</p>
+        </Modal>
+      )}
       <form onSubmit={handelUpdateName} className="uploadInfo__name">
         {
           /** Show the form if the user click on first name */

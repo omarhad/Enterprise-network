@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useMembers } from "../hooks/members";
 import { usePosts } from "../hooks/posts";
+import { Loader } from "../layouts/Loader";
 import Navbar from "../layouts/Navbar";
 import Home from "./Home";
 import Members from "./Members";
@@ -12,7 +13,17 @@ import Profil from "./Profil";
  * @returns {JSX.Element} The pages to display
  */
 export default function Pages({ onConnect }) {
+  const mediaQuery = window.matchMedia("(min-width: 1024px)"); // Media query to display the login page on mobile
+  const [desktop, setDesktop] = useState(mediaQuery.matches); // Store the current device
   const [page, setPage] = useState("Home"); // Store the current page
+
+  useEffect(() => {
+    if (mediaQuery.matches) {
+      setDesktop(true);
+    } else {
+      setDesktop(false);
+    }
+  }, [mediaQuery]);
 
   const {
     members, // Response from API with all members
@@ -30,27 +41,32 @@ export default function Pages({ onConnect }) {
     fetchPosts,
     addPost,
     deletePost,
+    updatePost,
     uploadPicPost,
     likePost,
-    updatePost,
     addComment,
     commentDelete,
+    commentUpdate,
+    deletePicPost,
   } = usePosts(); // Function to fetch all posts
 
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
 
-  useEffect(
+  useLayoutEffect(
     // Fetch list members when different pages are displayed
     function () {
-      if (page === "Members" || !members) {
+      if (!profil || !members || !posts) {
         fetchMembers();
-      }
-      if (page === "Profil" || !profil) {
         fetchMember(user.userId);
+        fetchPosts();
       }
     },
     [page, members, profil, user, posts, fetchMembers, fetchMember, fetchPosts]
   );
+
+  if (!profil || !members || !posts) {
+    return <Loader>Loading ...</Loader>;
+  }
 
   // function to logout
   const onLogout = () => {
@@ -75,16 +91,19 @@ export default function Pages({ onConnect }) {
       content = (
         <Home
           posts={posts}
+          members={members}
           profil={profil}
           isAdmin={userAdmin}
           addPost={addPost}
           onDelete={deletePost}
+          onUpdate={updatePost}
           onUpload={uploadPicPost}
           onLike={likePost}
-          getPost={fetchPosts}
-          onUpdate={updatePost}
           addComment={addComment}
           commentDelete={commentDelete}
+          commentUpdate={commentUpdate}
+          deletePicPost={deletePicPost}
+          desktop={desktop}
         />
       );
       break;
@@ -92,7 +111,9 @@ export default function Pages({ onConnect }) {
       content = (
         <Members
           members={members}
+          posts={posts}
           onDelete={deleteMember}
+          onDeletePost={deletePost}
           isAdmin={userAdmin}
         />
       );
@@ -111,16 +132,17 @@ export default function Pages({ onConnect }) {
       content = (
         <Home
           posts={posts}
+          members={members}
           profil={profil}
           isAdmin={userAdmin}
           addPost={addPost}
           onDelete={deletePost}
           onUpload={uploadPicPost}
           onLike={likePost}
-          getPost={fetchPosts}
-          onUpdate={updatePost}
           addComment={addComment}
           commentDelete={commentDelete}
+          commentUpdate={commentUpdate}
+          deletePicPost={deletePicPost}
         />
       );
       break;

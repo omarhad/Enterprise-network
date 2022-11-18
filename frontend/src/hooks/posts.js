@@ -14,7 +14,7 @@ function reducer(state, action) {
     case "SET_POSTS":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: action.payload,
         loading: false,
       };
@@ -28,7 +28,7 @@ function reducer(state, action) {
     case "DELETE_POST":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.filter(
           (post) => post._id !== action.payload.data._id
         ),
@@ -37,7 +37,16 @@ function reducer(state, action) {
     case "UPLOAD_POST":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
+        posts: state.posts.map((p) =>
+          p._id === action.payload.data._id ? action.payload.data : p
+        ),
+        loading: false,
+      };
+    case "DELETE_UPLOAD_POST":
+      return {
+        ...state,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -46,7 +55,7 @@ function reducer(state, action) {
     case "LIKE_POST":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -55,7 +64,7 @@ function reducer(state, action) {
     case "UPDATE_POST":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -64,7 +73,7 @@ function reducer(state, action) {
     case "COMMENT_POST":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -73,7 +82,7 @@ function reducer(state, action) {
     case "COMMENT_DELETE":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -82,7 +91,7 @@ function reducer(state, action) {
     case "COMMENT_UPDATE":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         posts: state.posts.map((p) =>
           p._id === action.payload.data._id ? action.payload.data : p
         ),
@@ -109,9 +118,7 @@ export function usePosts() {
 
         dispatch({ type: "FETCHING_POSTS" }); // Set loading to true
         const posts = await apiFetch("/api/post"); // Fetch all users from API
-        const postsLimit = posts.data.slice(0, num);
-        console.log("postsLimit : ", postsLimit);
-        dispatch({ type: "SET_POSTS", payload: postsLimit }); // Set members and loading to false
+        dispatch({ type: "SET_POSTS", payload: posts.data }); // Set members and loading to false
       } catch (err) {
         console.error(err);
       }
@@ -152,6 +159,20 @@ export function usePosts() {
           body: data,
         });
         dispatch({ type: "UPLOAD_POST", payload: newPost });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    deletePicPost: async (id, data) => {
+      try {
+        const newPost = await apiFetch("/api/post/delete-upload/" + id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        dispatch({ type: "DELETE_UPLOAD_POST", payload: newPost });
       } catch (err) {
         console.error(err);
       }
@@ -214,7 +235,7 @@ export function usePosts() {
     },
     commentUpdate: async (id, data) => {
       try {
-        const newPost = await apiFetch("/api/post/update-comment-post/" + id, {
+        const newPost = await apiFetch("/api/post/edit-comment-post/" + id, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

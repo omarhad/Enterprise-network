@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
 import { Field } from "../../layouts/Field";
-import { SvgDelete } from "../../utils/icons/SvgDelete";
-import { dateParser } from "../../utils/Tools";
 import Button from "../../layouts/Button";
+import { Comment } from "./Comment";
 
 /**
  * Function to display a comment
@@ -13,71 +11,67 @@ import Button from "../../layouts/Button";
  * @param {Function} commentDelete - The function to delete a comment
  * @param {Function} addComment - The function to edit a comment
  * @param {Boolean} isAdmin - The boolean to know if the current user is an admin
+ * @param {Function} commentUpdate - The function to edit a comment
+ * @param {Array} members - The array of all members
  * @returns div => A comment
  */
 export function CardComment({
   post,
+  members,
   profil,
   addComment,
   isAdmin,
   commentDelete,
+  commentUpdate,
 }) {
   const [text, setText] = useState("");
+  const [comment, setComment] = useState("");
+  const [edit, setEdit] = useState(false);
 
   const handleComment = async (e) => {
     e.preventDefault();
     if (text) {
-      await addComment(post._id, { commenterId: profil._id, text });
+      await addComment(post._id, { commenterId: profil._id, text: text });
       setText("");
     }
   };
   const handleDelete = async function (commentId) {
-    console.log(commentId);
     // Function to delete a comment
     if (window.confirm("Are you sure you want to delete this post?")) {
       await commentDelete(post._id, {
         commentId: `${commentId}`,
-        isAdmin,
+        isAdmin: isAdmin,
         commenterId: profil._id,
       });
     }
+  };
+
+  const handleEdit = async function (commentId) {
+    // Function to edit a comment
+    await commentUpdate(post._id, {
+      commentId: commentId,
+      commenterId: profil._id,
+      text: comment,
+    });
+    setEdit(false);
   };
 
   return (
     <div className="card-comment">
       {post.comments.map((comment) => {
         return (
-          <div className="card-comment" key={comment._id}>
-            <div
-              className={
-                comment.commenterId === profil._id
-                  ? "card-comment__header mine"
-                  : "card-comment__header"
-              }
-            >
-              <div className="card-comment__header__user">
-                <img src={profil.image} alt="user-pic" />
-                <h3>
-                  {profil.lastName} {profil.firstName}
-                </h3>
-              </div>
-              <div className="card-comment__header__date">
-                <span>{dateParser(post.createdAt)}</span>
-              </div>
-              <div className="card-comment__header__message">
-                {comment.text}
-              </div>
-            </div>
-            {(isAdmin || comment.commenterId === profil._id) && (
-              <>
-                <div
-                  className="button--delete"
-                  onClick={() => handleDelete(comment._id)}
-                >
-                  <SvgDelete />
-                </div>
-              </>
-            )}
+          <div className="card-comment__content" key={comment._id}>
+            <Comment
+              comment={comment}
+              members={members}
+              profil={profil}
+              commentDelete={handleDelete}
+              commentUpdate={handleEdit}
+              onChange={(e) => setComment(e.target.value)}
+              isAdmin={isAdmin}
+              edit={edit}
+              setEdit={setEdit}
+            />
           </div>
         );
       })}
@@ -101,4 +95,6 @@ CardComment.propTypes = {
   addComment: PropTypes.func,
   isAdmin: PropTypes.bool,
   commentDelete: PropTypes.func,
+  commentUpdate: PropTypes.func,
+  members: PropTypes.array,
 };

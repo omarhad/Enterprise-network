@@ -5,16 +5,16 @@ import { dateParser } from "../../utils/Tools";
 /**
  * Function to display a post header
  * @param {Object} post - The post to display
- * @param {Object} profil - The profil of the current user
+ * @param {Object} posterPost - The profil of the current user
  * @returns div => A post header
  */
-export default function CardHeader({ profil, post }) {
+export default function CardHeader({ posterPost, post }) {
   return (
     <div className="posts__card__header">
       <div className="posts__card__header__user">
-        <img src={profil.image} alt="user-pic" />
+        <img src={posterPost.image} alt="user-pic" />
         <h3>
-          {profil.lastName} {profil.firstName}
+          {posterPost.lastName} {posterPost.firstName}
         </h3>
       </div>
       <div className="posts__card__header__date">
@@ -26,5 +26,5 @@ export default function CardHeader({ profil, post }) {
 
 CardHeader.propTypes = {
   post: PropTypes.object.isRequired,
-  profil: PropTypes.object.isRequired,
+  posterPost: PropTypes.object.isRequired,
 };

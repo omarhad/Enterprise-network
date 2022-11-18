@@ -14,21 +14,21 @@ function reducer(state, action) {
     case "SET_MEMBERS":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         members: action.payload.data,
         loading: false,
       };
     case "SET_PROFIL":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         profil: action.payload.data,
         loading: false,
       };
     case "DELETE_MEMBER":
       return {
         ...state,
-        massage: action.payload.message,
+        message: action.payload.message,
         members: state.members.filter(
           (member) => member._id !== action.payload.data._id
         ),
@@ -91,9 +91,6 @@ export function useMembers() {
     },
     fetchMember: async function (id) {
       try {
-        if (state.loading || state.profil) return; // Don't fetch if already loading or if already fetched
-
-        dispatch({ type: "FETCHING_MEMBERS" }); // Set loading to true
         const profil = await apiFetch(`/api/user/${id}`); // Fetch single user from API
         dispatch({ type: "SET_PROFIL", payload: profil });
       } catch (err) {

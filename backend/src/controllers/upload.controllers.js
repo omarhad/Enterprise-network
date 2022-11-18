@@ -70,7 +70,15 @@ exports.uploadPost = async (req, res) => {
           const message = `You are not the owner of this post`;
           return res.status(403).json({ message });
         }
-        post.picture.push(updatedRecord); // Add the picture post
+        if (req.body.picId) {
+          post.picture.map((pic) => {
+            if (pic._id == req.body.picId) {
+              pic.pic = updatedRecord.pic;
+            }
+          });
+        } else {
+          post.picture.push(updatedRecord); // Add the picture post
+        }
         post.save(); // Save the post
         const message = "The post picture has been updated";
         return res.status(200).json({ message, data: post });
