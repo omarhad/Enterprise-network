@@ -15,7 +15,6 @@ import { useEffect } from "react";
  */
 export function LoginForm({ onConnect, onChoice }) {
   const [error, setError] = useState(null); // state variable to store error message
-  console.log("🚀 ~ file: LoginForm.jsx ~ line 17 ~ LoginForm ~ error", error);
   const [loading, setLoading] = useState(false); // state variable to store loading state
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export function LoginForm({ onConnect, onChoice }) {
     };
   }, [error]);
   // function to handle login
-  const handleSubmit = async function (e) {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page reload
     setError(null); // reset error message
     setLoading(true); // set loading state to true
@@ -86,7 +85,7 @@ export function LoginForm({ onConnect, onChoice }) {
               required
             />
           </div>
-          <Button loading={loading} className="button">
+          <Button type="submit" loading={loading} className="button">
             Login
           </Button>
         </div>

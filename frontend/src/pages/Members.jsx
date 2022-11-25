@@ -15,9 +15,9 @@ export default function Members({
   members,
   onDelete,
   isAdmin,
-  onEdit,
   posts,
   onDeletePost,
+  commentDelete,
 }) {
   return (
     <>
@@ -28,9 +28,9 @@ export default function Members({
           members={members}
           onDelete={onDelete}
           isAdmin={isAdmin}
-          onEdit={onEdit}
           posts={posts}
           onDeletePost={onDeletePost}
+          commentDelete={commentDelete}
         />
       )}
     </>
@@ -41,5 +41,7 @@ Members.propTypes = {
   members: PropTypes.array,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
-  onEdit: PropTypes.func,
+  posts: PropTypes.array,
+  onDeletePost: PropTypes.func,
+  commentDelete: PropTypes.func,
 };

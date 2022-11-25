@@ -88,3 +88,9 @@
         display: none;
     }
 }
+
+@media screen and (min-width: 1024px) {
+    .scrolled {
+        width: 60%;
+    }
+}

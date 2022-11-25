@@ -136,7 +136,7 @@ export function usePosts() {
     },
     deletePost: async (id, isAdmin, posterId) => {
       try {
-        const data = { isAdmin, posterId };
+        const data = { isAdmin: isAdmin, posterId: posterId };
         console.log("data", data);
         return await apiFetch("/api/post/" + id, {
           method: "DELETE",

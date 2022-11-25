@@ -44,11 +44,17 @@
     .main__content {
         flex-direction: row;
         align-items: flex-start;
-        justify-content: space-around;
+        justify-content: flex-start;
+
+        .home {
+            width: 60%;
+        }
 
         .listMembers {
             display: flex;
             width: 40%;
+            position: fixed;
+            right: 0;
         }
     }
 

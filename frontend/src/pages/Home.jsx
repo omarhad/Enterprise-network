@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Card from "../components/posts/Card";
 import NewPost from "../components/posts/NewPost";
 import { Loader } from "../layouts/Loader";
-import { AllMembers } from "../components/members/ListMembers";
+import Members from "./Members";
 /**
  * Component Home
  * @param {Object} posts // Response from API with all posts
@@ -36,6 +36,7 @@ export default function Home({
   onUpload,
   deletePicPost,
   desktop,
+  deleteMember,
 }) {
   return (
     <>
@@ -69,7 +70,14 @@ export default function Home({
         )}
       </div>
       {desktop && (
-        <AllMembers members={members} onDelete={onDelete} isAdmin={isAdmin} />
+        <Members
+          members={members}
+          posts={posts}
+          onDelete={deleteMember}
+          onDeletePost={onDelete}
+          commentDelete={commentDelete}
+          isAdmin={isAdmin}
+        />
       )}
     </>
   );
@@ -89,4 +97,6 @@ Home.propTypes = {
   onUpdate: PropTypes.func,
   onUpload: PropTypes.func,
   deletePicPost: PropTypes.func,
+  desktop: PropTypes.bool,
+  deleteMember: PropTypes.func,
 };

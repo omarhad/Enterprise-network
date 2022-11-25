@@ -11,8 +11,14 @@ import { SvgDelete } from "../../utils/icons/SvgDelete";
  * @param {Boolean} isAdmin // Boolean to know if user is admin
  * @returns li => member information
  */
-export function Member({ member, onDelete, isAdmin, posts, onDeletePost }) {
-  console.log("🚀 ~ file: Member.jsx ~ line 15 ~ Member ~ posts", posts);
+export function Member({
+  member,
+  onDelete,
+  isAdmin,
+  posts,
+  onDeletePost,
+  commentDelete,
+}) {
   const [show, setShow] = useState(false); // Store the state of the button to show more information
 
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
@@ -29,9 +35,20 @@ export function Member({ member, onDelete, isAdmin, posts, onDeletePost }) {
     e.preventDefault();
     setLoading(true);
     if (window.confirm("Voulez-vous vraiment supprimer ce membre ?")) {
-      posts.map((post) => {
+      posts.forEach((post) => {
         if (post.posterId === member._id) {
-          onDeletePost(post._id, isAdmin, member._id);
+          onDeletePost(post._id, post.posterId, isAdmin);
+        }
+        if (post.comments.length > 0) {
+          post.comments.forEach((comment) => {
+            if (comment.commenterId === member._id) {
+              commentDelete(post._id, {
+                commentId: comment._id,
+                isAdmin: isAdmin,
+                commenterId: member._id,
+              });
+            }
+          });
         }
       });
       await onDelete(member);
@@ -83,4 +100,7 @@ Member.propTypes = {
   member: PropTypes.object.isRequired,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
+  posts: PropTypes.array,
+  onDeletePost: PropTypes.func,
+  commentDelete: PropTypes.func,
 };

@@ -16,6 +16,7 @@ export function AllMembers({
   isAdmin,
   posts,
   onDeletePost,
+  commentDelete,
 }) {
   return (
     <>
@@ -28,6 +29,7 @@ export function AllMembers({
           isAdmin={isAdmin}
           posts={posts}
           onDeletePost={onDeletePost}
+          commentDelete={commentDelete}
         />
       )}
     </>
@@ -38,7 +40,9 @@ AllMembers.propTypes = {
   members: PropTypes.array,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
-  onEdit: PropTypes.func,
+  posts: PropTypes.array,
+  onDeletePost: PropTypes.func,
+  commentDelete: PropTypes.func,
 };
 //--------------------------------------
 /**
@@ -48,7 +52,14 @@ AllMembers.propTypes = {
  * @param {Boolean} isAdmin // Boolean to know if user is admin
  * @returns ul => list of members
  */
-function ListMembers({ members, onDelete, isAdmin, posts, onDeletePost }) {
+function ListMembers({
+  members,
+  onDelete,
+  isAdmin,
+  posts,
+  onDeletePost,
+  commentDelete,
+}) {
   return (
     <ul className="listMembers">
       <h1>List Members</h1>
@@ -60,6 +71,7 @@ function ListMembers({ members, onDelete, isAdmin, posts, onDeletePost }) {
           isAdmin={isAdmin}
           posts={posts}
           onDeletePost={onDeletePost}
+          commentDelete={commentDelete}
         />
       ))}
     </ul>
@@ -70,4 +82,7 @@ ListMembers.propTypes = {
   members: PropTypes.array,
   onDelete: PropTypes.func,
   isAdmin: PropTypes.bool,
+  posts: PropTypes.array,
+  onDeletePost: PropTypes.func,
+  commentDelete: PropTypes.func,
 };

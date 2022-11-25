@@ -104,6 +104,7 @@ export default function Pages({ onConnect }) {
           commentUpdate={commentUpdate}
           deletePicPost={deletePicPost}
           desktop={desktop}
+          deleteMember={deleteMember}
         />
       );
       break;
@@ -114,6 +115,7 @@ export default function Pages({ onConnect }) {
           posts={posts}
           onDelete={deleteMember}
           onDeletePost={deletePost}
+          commentDelete={commentDelete}
           isAdmin={userAdmin}
         />
       );
@@ -143,6 +145,7 @@ export default function Pages({ onConnect }) {
           commentDelete={commentDelete}
           commentUpdate={commentUpdate}
           deletePicPost={deletePicPost}
+          deleteMember={deleteMember}
         />
       );
       break;

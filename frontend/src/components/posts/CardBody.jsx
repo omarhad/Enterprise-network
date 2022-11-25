@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import SvgPlus from "../../utils/icons/SvgPlus";
 import SvgMinus from "../../utils/icons/SvgMinus";
+import Window from "../../layouts/Window";
 
 /**
  * Function to display a post body
@@ -13,6 +14,8 @@ export default function CardBody({ post, more }) {
   const [morePic, setMorePic] = React.useState(false);
   const [picture, setPicture] = React.useState(post.picture);
   const [minusClassName, setMinusClassName] = React.useState("");
+  const [window, setWindow] = React.useState(false);
+  const [picFullScreen, setPicFullScreen] = React.useState("");
   const user = JSON.parse(localStorage.getItem("user")); // Get the user information from localStorage
 
   useEffect(() => {
@@ -57,6 +60,12 @@ export default function CardBody({ post, more }) {
     }
   };
 
+  const handleFullScreen = (pic) => {
+    // Function to show the form when the user click on the button
+    setPicFullScreen(pic);
+    setWindow(true);
+  };
+
   return (
     <div
       className={
@@ -77,7 +86,11 @@ export default function CardBody({ post, more }) {
         <div className="posts__card__body__pic">
           {picture.map((pic) => (
             <div className={picClassName} key={pic._id}>
-              <img src={pic.pic} alt="post-pic" />
+              <img
+                src={pic.pic}
+                alt="post-pic"
+                onClick={() => handleFullScreen(pic.pic)}
+              />
             </div>
           ))}
           {post.picture.length > 4 && (
@@ -102,6 +115,9 @@ export default function CardBody({ post, more }) {
         <div className="posts__card__body__video">
           <iframe src={post.video} frameBorder="0" title={post._id}></iframe>
         </div>
+      )}
+      {window === true && (
+        <Window setFullScreen={setWindow} picture={picFullScreen} />
       )}
     </div>
   );

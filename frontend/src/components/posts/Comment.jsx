@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { dateParser, timestampParser } from "../../utils/Tools";
+import { timestampParser } from "../../utils/Tools";
 import CardUpdate from "./CardUpdate";
 import { Field } from "../../layouts/Field";
 import Button from "../../layouts/Button";

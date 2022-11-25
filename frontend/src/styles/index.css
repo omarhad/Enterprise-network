@@ -104,11 +104,16 @@
   .main__content {
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: flex-start;
+  }
+  .main__content .home {
+    width: 60%;
   }
   .main__content .listMembers {
     display: flex;
     width: 40%;
+    position: fixed;
+    right: 0;
   }
 }
 .loginPage {
@@ -710,21 +715,38 @@
   width: 100%;
 }
 
+.window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(169, 169, 169, 0.8);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.window .window-content {
+  width: 90vw;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.window .window-content img {
+  width: 100%;
+  max-width: 1024px;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  box-shadow: 0px 0px 20px 10px rgba(41, 41, 41, 0.7);
+}
+
 @media screen and (min-width: 1024px) {
   .posts {
-    max-height: 75vh;
-    overflow: scroll;
     padding: 0 0.5rem;
     padding-top: 1rem;
-  }
-  .posts::-webkit-scrollbar {
-    height: 0;
-    width: 0.7rem;
-  }
-  .posts::-webkit-scrollbar-thumb {
-    background-color: #FFD7D7;
-    border-radius: 20px;
-    border: 3px solid #4E5166;
   }
   .preview {
     gap: 1rem;
@@ -816,6 +838,11 @@
   display: none;
 }
 
+@media screen and (min-width: 1024px) {
+  .scrolled {
+    width: 60%;
+  }
+}
 .card-comment {
   display: flex;
   flex-direction: column;
@@ -936,6 +963,21 @@
 .button--comment, .button--newPost {
   height: 2rem;
   font-size: 1rem;
+}
+.button--close {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 25%;
+  background: #FFD7D7;
+  position: absolute;
+  top: 3rem;
+  right: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button--close svg {
+  width: 1.2rem;
 }
 .button:hover {
   background: #4E5166;
