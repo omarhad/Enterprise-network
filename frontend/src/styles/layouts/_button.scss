@@ -1,0 +1,89 @@
+.button {
+    background: $primaire;
+    box-shadow: $shadowPrimaire;
+    height: 3rem;
+    min-width: 130px;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: #FFFFFF;
+    transition: all 0.2s ease-in-out;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &__addPic {
+        position: relative;
+    }
+
+    &--delete,
+    &--edit,
+    &--image,
+    &--comment,
+    &--video {
+        width: 2rem;
+
+        svg {
+            transform: scale(0.8);
+        }
+
+        &__picture {
+            position: absolute;
+            top: 2rem;
+            left: 1.5rem;
+            background: #ffffff4a;
+            border-radius: 0.5rem;
+        }
+    }
+
+    &--plus {
+        width: 4rem;
+    }
+
+    &--comment,
+    &--newPost {
+        height: 2rem;
+        font-size: 1rem;
+    }
+
+    &--close {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 25%;
+        background: $secondaire;
+        position: absolute;
+        top: 3rem;
+        right: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 1.2rem;
+        }
+    }
+
+
+
+
+    &:hover {
+        background: $tertiaire;
+        color: $secondaire;
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.back {
+    z-index: 100;
+}
+
+@media screen and (min-width: 1024px) {
+    .back {
+        display: none;
+    }
+}
