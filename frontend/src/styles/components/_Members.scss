@@ -1,0 +1,62 @@
+.listMembers {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+
+    .member {
+        display: flex;
+        align-items: center;
+        width: 22rem;
+        min-height: 7rem;
+        height: auto;
+        border-radius: .3rem;
+        padding: .8rem;
+        box-sizing: border-box;
+        background-color: $tertiaire;
+        box-shadow: $shadowPrimaire;
+        position: relative;
+        justify-content: space-between;
+
+        &__avatar {
+            width: 5rem;
+            height: 5rem;
+            position: absolute;
+            top: 1rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 1rem;
+            }
+        }
+
+        &__info {
+            padding-left: 6rem;
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+            font-size: .8rem;
+            font-weight: 300;
+            color: white;
+
+            h3 {
+                font-size: 1.3rem;
+                letter-spacing: .05rem;
+                font-weight: 400;
+            }
+
+            span {
+                opacity: .7;
+                font-weight: 200;
+                letter-spacing: .1rem;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

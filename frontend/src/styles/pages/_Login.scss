@@ -1,0 +1,50 @@
+.Login {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: $primaireBackground;
+
+    &__header {
+        width: 100vw;
+        height: 10vh;
+        background-color: $secondaireBackground;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 0 1rem;
+        position: fixed;
+        z-index: 100;
+    }
+
+    &__content {
+        height: 90vh;
+        transform: translateY(10vh);
+    }
+
+    .alert {
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        text-align: center;
+        width: 95vw;
+    }
+
+}
+
+@media screen and (min-width: 1024px) {
+    .Login__content {
+        display: flex;
+
+        .loginPage {
+            width: 60%;
+            padding: 1rem 0;
+        }
+
+        .login-form {
+            width: 40%;
+        }
+    }
+}

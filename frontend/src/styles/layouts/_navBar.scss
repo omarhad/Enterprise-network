@@ -1,0 +1,102 @@
+.navBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    visibility: hidden;
+    right: -100vw;
+    top: 5rem;
+    right: 0;
+    width: 0;
+    height: 100vh;
+    padding: 2rem;
+    background-color: $secondaireBackground;
+    transition: all .8s ease-out;
+
+    &__burger {
+        display: block;
+        position: fixed;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        color: white;
+
+        &--line,
+        &--line::before,
+        &--line::after {
+            display: block;
+            width: 40px;
+            height: 3px;
+            position: relative;
+            border-radius: 3px;
+            background-color: white;
+            transition: all .3s ease-in-out;
+        }
+
+        &--line::before,
+        &--line::after {
+            content: "";
+            position: absolute;
+            left: 0;
+        }
+
+        &--line::before {
+            transform: translateY(-12px);
+        }
+
+        &--line::after {
+            transform: translateY(12px);
+        }
+
+    }
+
+    &__burger:hover {
+        cursor: pointer;
+    }
+
+}
+
+.show-nav .navBar {
+    right: 0;
+    width: 100vw;
+    visibility: visible;
+    position: absolute;
+
+    &__burger--line {
+        width: 0;
+        background-color: transparent;
+    }
+
+    &__burger--line::before {
+        transform: rotate(45deg) translateY(0);
+    }
+
+    &__burger--line::after {
+        transform: rotate(-45deg) translateY(0);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .navBar {
+
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        visibility: visible;
+        right: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        gap: 1rem;
+        padding: 0;
+
+        &__burger {
+            display: none;
+        }
+
+    }
+}
